@@ -1,0 +1,18 @@
+PluginInfo
+{
+	string %DisplayName{"AngelScript"}
+	string %Category{"Scripting"}
+	string %MinEngineVersion{"0.7.0"}
+	string %MaxEngineVersion{"0.7.0"}
+	string %Icon{"AngelScriptIcon.png"}
+    string %Banner{"AngelScriptBanner.png"}
+	string %Description{"Adds support for scripting via AngelScript."}
+	string %EditorPlugins{"plEditorPluginAngelScript"}
+	string %EditorEnginePlugins{"plEnginePluginAngelScript"}
+	string %RuntimePlugins{"plAngelScriptPlugin"}
+	string %PackageDependencies{}
+	string %RequiredPlugins{}
+	string %ExclusiveFeatures{}
+	string %EnabledInTemplates{}
+	string %PlasmaBuildTargetName{"AngelScriptPlugin"}
+}

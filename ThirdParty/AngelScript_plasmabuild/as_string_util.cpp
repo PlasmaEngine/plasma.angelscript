@@ -1,0 +1,1 @@
+#include "../AngelScript/source/as_string_util.cpp"

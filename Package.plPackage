@@ -1,0 +1,59 @@
+// plasma.angelscript — AngelScript scripting.
+//
+// The AUTHORED manifest, kept in source next to the plugin. It declares identity, compatibility,
+// what to load and what to ship. Component hashes and sizes are NOT here: the packaging step
+// computes those and emits them into the published manifest that ships inside the .plpkg.
+//
+// Field reference and validation rules: Docs/PluginPackageManagerPlan.html §05.
+
+PackageInfo
+{
+	// ---- identity -------------------------------------------------------------
+	// Version starts at 1.0.0 rather than inheriting an engine version: this package
+	// versions on its own changes from now on, not on the engine's.
+	string %Id{"plasma.angelscript"}
+	string %Version{"1.0.0"}
+	string %Publisher{"PlasmaTechnology"}
+	string %License{"MIT"}
+	string %Homepage{"https://plasmagameengine.com"}
+
+	// ---- compatibility --------------------------------------------------------
+	// Must equal plSdkVersion::GetAbiTag() of the engine these binaries were built
+	// against. The build configuration is part of it - a Development and a Shipping
+	// build do not share a binary interface.
+	string %MinEngineVersion{"0.7.0"}
+	string %MaxEngineVersion{"0.7.0"}
+	string %AbiTag{"win64-msvc19-0.7.0-dev"}
+
+	// ---- presentation ---------------------------------------------------------
+	string %DisplayName{"AngelScript"}
+	string %Category{"Scripting"}
+	string %Description{"AngelScript scripting, with an editor asset type for authoring scripts and attaching them to components.
+
+The AngelScript library is compiled into the plugin, so there is nothing else to install."}
+	string %Icon{"Branding/AngelScriptIcon.png"}
+	string %Banner{"Branding/AngelScriptBanner.png"}
+
+	// ---- binaries -------------------------------------------------------------
+	// PackageDependencies is empty because AngelScript is statically folded into
+	// plAngelScriptPlugin rather than shipped as its own DLL - the engine builds it
+	// the same way, which is why no AngelScript DLL exists in Binaries.
+	string %EditorPlugins{"plEditorPluginAngelScript"}
+	string %EditorEnginePlugins{"plEnginePluginAngelScript"}
+	string %RuntimePlugins{"plAngelScriptPlugin"}
+	string %PackageDependencies{}
+
+	// ---- dependencies ---------------------------------------------------------
+	// plEditorPluginAngelScript defines an asset document type, so it builds on
+	// EditorPluginAssets and must load after it. plasma.assets is a built-in - it
+	// ships with the engine - but it is declared like anything else so the store
+	// can reason about it.
+	Requires { string %Id{"plasma.assets"} string %Range{"^1.0"} }
+
+	// ---- components -----------------------------------------------------------
+	Component { string %Name{"manifest"} string %Platform{"any"} }
+	Component { string %Name{"runtime-win64"} string %Platform{"win64"} }
+	Component { string %Name{"editor-win64"} string %Platform{"win64"} }
+	Component { string %Name{"icon"} string %Platform{"any"} }
+	Component { string %Name{"banner"} string %Platform{"any"} }
+}

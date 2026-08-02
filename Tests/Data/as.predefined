@@ -1,0 +1,3574 @@
+// *** TYPEDEFS *** 
+
+typedef int8 plInt8;
+typedef int16 plInt16;
+typedef int32 plInt32;
+typedef int64 plInt64;
+typedef uint8 plUInt8;
+typedef uint16 plUInt16;
+typedef uint32 plUInt32;
+typedef uint64 plUInt64;
+
+// *** ENUMS *** 
+
+enum plObjectMsgQueueType
+{
+  PostAsync = 0,
+  PostTransform = 1,
+  NextFrame = 2,
+  AfterInitialized = 3,
+}
+
+enum plTransformPreservation
+{
+  PreserveLocal = 0,
+  PreserveGlobal = 1,
+}
+
+enum plSkeletonPoseMode
+{
+  CustomPose = 0,
+  RestPose = 1,
+  Disabled = 2,
+}
+
+enum plCameraUsageHint
+{
+  None = 0,
+  MainView = 1,
+  EditorView = 2,
+  RenderTarget = 3,
+  Culling = 4,
+  Thumbnail = 7,
+}
+
+enum plCameraMode
+{
+  PerspectiveFixedFovX = 1,
+  PerspectiveFixedFovY = 2,
+  OrthoFixedWidth = 3,
+  OrthoFixedHeight = 4,
+}
+
+enum plOccluderType
+{
+  Box = 0,
+  QuadPosX = 1,
+  Mesh = 2,
+}
+
+enum plSplineComponentSpace
+{
+  Local = 0,
+  Global = 1,
+}
+
+enum plSplineComponentFlags
+{
+  VisualizeSpline = 1,
+  VisualizeUpDir = 2,
+  VisualizeTangents = 4,
+}
+
+enum plSplineTangentMode
+{
+  Auto = 0,
+  Custom = 1,
+  Linear = 2,
+}
+
+enum plSpriteBlendMode
+{
+  Masked = 0,
+  Transparent = 1,
+  Additive = 2,
+}
+
+enum plBasisAxis
+{
+  PositiveX = 0,
+  PositiveY = 1,
+  PositiveZ = 2,
+  NegativeX = 3,
+  NegativeY = 4,
+  NegativeZ = 5,
+}
+
+enum plOnComponentFinishedAction
+{
+  None = 0,
+  DeleteComponent = 1,
+  DeleteGameObject = 2,
+}
+
+enum plReflectionProbeMode
+{
+  Static = 0,
+  Dynamic = 1,
+}
+
+enum plFillLightMode
+{
+  Additive = 0,
+  Subtractive = 1,
+  ModulateIndirect = 2,
+}
+
+enum plHairRenderMode
+{
+  Strands = 0,
+  Cards = 1,
+}
+
+enum plSplineMeshDistributionMode
+{
+  FitToSegment = 0,
+  ScaleEvenly = 1,
+  ScaleEvenlyPerSegment = 2,
+}
+
+enum plUpdateRate
+{
+  EveryFrame = 0,
+  Max30fps = 1,
+  Max20fps = 2,
+  Max10fps = 3,
+  Max5fps = 4,
+  Max2fps = 5,
+  Max1fps = 6,
+  Never = 7,
+}
+
+enum plSetColorMode
+{
+  SetRGBA = 0,
+  SetRGB = 1,
+  SetAlpha = 2,
+  AlphaBlend = 3,
+  Additive = 4,
+  Modulate = 5,
+}
+
+enum plPropertyAnimMode
+{
+  Once = 0,
+  Loop = 1,
+  BackAndForth = 2,
+}
+
+enum plFollowSplineMode
+{
+  OnlyPosition = 0,
+  AlignUpZ = 1,
+  FullRotation = 2,
+}
+
+enum plRootMotionMode
+{
+  Ignore = 0,
+  ApplyToOwner = 1,
+  SendMoveCharacterMsg = 2,
+}
+
+enum plAnimationInvisibleUpdateRate
+{
+  FullUpdate = 0,
+  Max60FPS = 1,
+  Max30FPS = 2,
+  Max15FPS = 3,
+  Max10FPS = 4,
+  Max5FPS = 5,
+  Pause = 6,
+}
+
+enum plWindStrength
+{
+  None = 0,
+  Calm = 1,
+  LightBreeze = 2,
+  GentleBreeze = 3,
+  ModerateBreeze = 4,
+  StrongBreeze = 5,
+  Storm = 6,
+  WeakShockwave = 7,
+  MediumShockwave = 8,
+  StrongShockwave = 9,
+  ExtremeShockwave = 10,
+}
+
+enum plWindVolumeCylinderMode
+{
+  Directional = 0,
+  Vortex = 1,
+}
+
+enum plGlobalBlackboardInitMode
+{
+  EnsureEntriesExist = 0,
+  ResetEntryValues = 1,
+  ClearEntireBlackboard = 2,
+}
+
+enum plGreyBoxShape
+{
+  Box = 0,
+  RampX = 1,
+  RampY = 2,
+  Column = 3,
+  StairsX = 4,
+  StairsY = 5,
+  ArchX = 6,
+  ArchY = 7,
+  SpiralStairs = 8,
+}
+
+enum plInputMessageGranularity
+{
+  PressOnly = 0,
+  PressAndRelease = 1,
+  PressReleaseAndDown = 2,
+}
+
+enum plSceneLoadMode
+{
+  None = 0,
+  LoadAndSwitch = 1,
+  Preload = 2,
+  CancelPreload = 3,
+}
+
+enum plXRDeviceType
+{
+  HMD = 0,
+  LeftController = 1,
+  RightController = 2,
+  DeviceID0 = 3,
+  DeviceID1 = 4,
+  DeviceID2 = 5,
+  DeviceID3 = 6,
+  DeviceID4 = 7,
+  DeviceID5 = 8,
+  DeviceID6 = 9,
+  DeviceID7 = 10,
+  DeviceID8 = 11,
+  DeviceID9 = 12,
+  DeviceID10 = 13,
+  DeviceID11 = 14,
+  DeviceID12 = 15,
+  DeviceID13 = 16,
+  DeviceID14 = 17,
+  DeviceID15 = 18,
+}
+
+enum plXRPoseLocation
+{
+  Grip = 0,
+  Aim = 1,
+}
+
+enum plXRTransformSpace
+{
+  Local = 0,
+  Global = 1,
+}
+
+enum plXRStageSpace
+{
+  Seated = 0,
+  Standing = 1,
+}
+
+enum plAudioSystemSoundObstructionType
+{
+  None = 0,
+  SingleRay = 1,
+  MultipleRay = 2,
+}
+
+enum plOnJoltContact
+{
+  ImpactReactions = 2,
+  SlideReactions = 4,
+  RollXReactions = 8,
+  RollYReactions = 16,
+  RollZReactions = 32,
+}
+
+enum plJoltCharacterDebugFlags
+{
+  PrintState = 1,
+  VisShape = 2,
+  VisContacts = 4,
+  VisCasts = 8,
+  VisGroundContact = 16,
+  VisFootCheck = 32,
+}
+
+enum plJoltBreakableShape
+{
+  Rectangle = 0,
+  Triangle = 1,
+  Circle = 2,
+}
+
+enum plJoltBreakableSlabFlags
+{
+  FixedEdgeTop = 1,
+  FixedEdgeRight = 2,
+  FixedEdgeBottom = 4,
+  FixedEdgeLeft = 8,
+}
+
+enum plJoltClothSheetFlags
+{
+  FixedCornerTopLeft = 1,
+  FixedCornerTopRight = 2,
+  FixedCornerBottomRight = 4,
+  FixedCornerBottomLeft = 8,
+  FixedEdgeTop = 16,
+  FixedEdgeRight = 32,
+  FixedEdgeBottom = 64,
+  FixedEdgeLeft = 128,
+}
+
+enum plSkeletonJointType
+{
+  None = 0,
+  Fixed = 1,
+  SwingTwist = 2,
+  Rod = 3,
+}
+
+enum plJoltRagdollStartMode
+{
+  WithBindPose = 0,
+  WithNextAnimPose = 1,
+  WithCurrentMeshPose = 2,
+}
+
+enum plJoltRagdollAnimMode
+{
+  Off = 0,
+  Limp = 1,
+  Powered = 2,
+  Controlled = 3,
+}
+
+enum plJoltRopeAnchorConstraintMode
+{
+  None = 0,
+  Point = 1,
+  Fixed = 2,
+  Cone = 3,
+}
+
+enum plJoltSteppingMode
+{
+  Variable = 0,
+  Fixed = 1,
+  SemiFixed = 2,
+}
+
+enum plJoltConstraintLimitMode
+{
+  NoLimit = 0,
+  HardLimit = 1,
+}
+
+enum plJoltConstraintDriveMode
+{
+  NoDrive = 0,
+  DriveVelocity = 1,
+  DrivePosition = 2,
+}
+
+enum plTriggerState
+{
+  Activated = 0,
+  Continuing = 1,
+  Deactivated = 2,
+}
+
+enum plPhysicsShapeType
+{
+  Static = 1,
+  Dynamic = 2,
+  Query = 4,
+  Trigger = 8,
+  Character = 16,
+  Ragdoll = 32,
+  Rope = 64,
+  Cloth = 128,
+  Debris = 256,
+}
+
+enum plDebugTextHAlign
+{
+  Left = 0,
+  Center = 1,
+  Right = 2,
+}
+
+enum plDebugTextPlacement
+{
+  TopLeft = 0,
+  TopCenter = 1,
+  TopRight = 2,
+  BottomLeft = 3,
+  BottomCenter = 4,
+  BottomRight = 5,
+}
+
+
+// *** CALLBACKS *** 
+
+funcdef bool ReportObjectCB(plGameObject@);
+
+// *** TYPES *** 
+
+class plAngelScriptMessage
+{
+}
+
+class array<T>
+{
+  funcdef bool Less(const T&in a, const T&in b);
+
+  T& opIndex(uint index);
+  const T& opIndex(uint index) const;
+  T& PeekBack();
+  const T& PeekBack() const;
+  T& ExpandAndGetRef();
+  array<T>& opAssign(const array<T>&in);
+  void InsertAt(uint index, const T&in value);
+  void InsertRangeAt(uint index, const array<T>&inout arr);
+  void PushBack(const T&in value);
+  void RemoveAtAndCopy(uint index);
+  void PopBack();
+  void RemoveAtAndCopy(uint start, uint count);
+  uint GetCount() const;
+  void Reserve(uint length);
+  void SetCount(uint length);
+  void Clear();
+  void Sort();
+  void Reverse();
+  int IndexOf(const T&in value) const;
+  bool Contains(const T&in value) const;
+  int IndexOf(uint startAt, const T&in value) const;
+  int IndexOfByRef(const T&in value) const;
+  int IndexOfByRef(uint startAt, const T&in value) const;
+  bool opEquals(const array<T>&in) const;
+  bool IsEmpty() const;
+  void Sort(array<T>::Less&in, uint startAt = 0, uint count = uint(- 1));
+}
+
+class plRTTI
+{
+}
+
+class plVec2
+{
+  float x;
+  float y;
+
+  plVec2(float x, float y);
+  plVec2(float xyz);
+
+  plVec3 GetAsVec3(float z) const;
+  plVec4 GetAsVec4(float z, float w) const;
+  void Set(float xyz);
+  void Set(float x, float y);
+  void SetZero();
+  float GetLength() const;
+  float GetDistanceTo(const plVec2&in rhs) const;
+  float GetSquaredDistanceTo(const plVec2&in rhs) const;
+  float GetLengthSquared() const;
+  float GetLengthAndNormalize();
+  plVec2 GetNormalized() const;
+  void Normalize();
+  bool IsZero() const;
+  bool IsZero(float fEpsilon) const;
+  bool IsNormalized(float fEpsilon = 0.001f) const;
+  bool IsNaN() const;
+  bool IsValid() const;
+  void opAddAssign(const plVec2&in);
+  void opSubAssign(const plVec2&in);
+  void opMulAssign(float);
+  void opDivAssign(float);
+  bool IsIdentical(const plVec2&in) const;
+  bool IsEqual(const plVec2&in, float fEpsilon) const;
+  float Dot(const plVec2&in) const;
+  plVec2 CompMin(const plVec2&in rhs) const;
+  plVec2 CompMax(const plVec2&in rhs) const;
+  plVec2 CompClamp(const plVec2&in rhs) const;
+  plVec2 CompMul(const plVec2&in rhs) const;
+  plVec2 CompDiv(const plVec2&in rhs) const;
+  plVec2 Abs() const;
+  void MakeOrthogonalTo(const plVec2&in);
+  plVec2 GetOrthogonalVector() const;
+  plVec2 GetReflectedVector(const plVec2&in) const;
+  plVec2 opNeg() const;
+  plVec2 opAdd(const plVec2&in) const;
+  plVec2 opSub(const plVec2&in) const;
+  plVec2 opMul(float) const;
+  plVec2 opMul_r(float) const;
+  plVec2 opDiv(float) const;
+  bool opEquals(const plVec2&in) const;
+  int opCmp(const plVec2&in) const;
+}
+
+class plVec3
+{
+  float x;
+  float y;
+  float z;
+
+  plVec3(float x, float y, float z);
+  plVec3(float xyz);
+
+  plVec2 GetAsVec2() const;
+  plVec4 GetAsVec4(float w) const;
+  plVec4 GetAsPositionVec4() const;
+  plVec4 GetAsDirectionVec4() const;
+  void Set(float xyz);
+  void Set(float x, float y, float z);
+  void SetZero();
+  float GetLength() const;
+  float GetDistanceTo(const plVec3&in rhs) const;
+  float GetSquaredDistanceTo(const plVec3&in rhs) const;
+  float GetLengthSquared() const;
+  float GetLengthAndNormalize();
+  plVec3 GetNormalized() const;
+  void Normalize();
+  bool IsZero() const;
+  bool IsZero(float fEpsilon) const;
+  bool IsNormalized(float fEpsilon = 0.001f) const;
+  bool IsNaN() const;
+  bool IsValid() const;
+  void opAddAssign(const plVec3&in);
+  void opSubAssign(const plVec3&in);
+  void opMulAssign(const plVec3&in);
+  void opDivAssign(const plVec3&in);
+  void opMulAssign(float);
+  void opDivAssign(float);
+  bool IsIdentical(const plVec3&in) const;
+  bool IsEqual(const plVec3&in, float fEpsilon) const;
+  float Dot(const plVec3&in) const;
+  plVec3 CrossRH(const plVec3&in) const;
+  plVec3 CompMin(const plVec3&in) const;
+  plVec3 CompMax(const plVec3&in) const;
+  plVec3 CompClamp(const plVec3&in) const;
+  plVec3 CompMul(const plVec3&in) const;
+  plVec3 CompDiv(const plVec3&in) const;
+  plVec3 Abs() const;
+  void MakeOrthogonalTo(const plVec3&in);
+  plVec3 GetOrthogonalVector() const;
+  plVec3 GetReflectedVector(const plVec3&in) const;
+  plVec3 opNeg() const;
+  plVec3 opAdd(const plVec3&in) const;
+  plVec3 opSub(const plVec3&in) const;
+  plVec3 opMul(float) const;
+  plVec3 opMul_r(float) const;
+  plVec3 opDiv(float) const;
+  bool opEquals(const plVec3&in) const;
+  int opCmp(const plVec3&in) const;
+}
+
+class plVec4
+{
+  float x;
+  float y;
+  float z;
+  float w;
+
+  plVec4(float x, float y, float z, float w);
+  plVec4(float xyzw);
+
+  plVec2 GetAsVec2() const;
+  plVec3 GetAsVec3() const;
+  void Set(float xyzw);
+  void Set(float x, float y, float z, float w);
+  void SetZero();
+  float GetLength() const;
+  float GetLengthSquared() const;
+  float GetLengthAndNormalize();
+  plVec4 GetNormalized() const;
+  void Normalize();
+  bool IsZero() const;
+  bool IsZero(float fEpsilon) const;
+  bool IsNormalized(float fEpsilon = 0.001f) const;
+  bool IsNaN() const;
+  bool IsValid() const;
+  void opAddAssign(const plVec4&in);
+  void opSubAssign(const plVec4&in);
+  void opMulAssign(float);
+  void opDivAssign(float);
+  bool IsIdentical(const plVec4&in) const;
+  bool IsEqual(const plVec4&in, float) const;
+  float Dot(const plVec4&in) const;
+  plVec4 CompMin(const plVec4&in) const;
+  plVec4 CompMax(const plVec4&in) const;
+  plVec4 CompClamp(const plVec4&in) const;
+  plVec4 CompMul(const plVec4&in) const;
+  plVec4 CompDiv(const plVec4&in) const;
+  plVec4 Abs() const;
+  plVec4 opNeg() const;
+  plVec4 opAdd(const plVec4&in) const;
+  plVec4 opSub(const plVec4&in) const;
+  plVec4 opMul(float) const;
+  plVec4 opMul_r(float) const;
+  plVec4 opDiv(float) const;
+  bool opEquals(const plVec4&in) const;
+  int opCmp(const plVec4&in) const;
+}
+
+class plAngle
+{
+  float GetDegree() const;
+  float GetRadian() const;
+  void SetRadian(float fRadians);
+  void NormalizeRange();
+  plAngle GetNormalizedRange() const;
+  bool IsEqualSimple(plAngle rhs, plAngle epsilon) const;
+  bool IsEqualNormalized(plAngle rhs, plAngle epsilon) const;
+  plAngle opNeg() const;
+  plAngle opAdd(plAngle) const;
+  plAngle opSub(plAngle) const;
+  void opAddAssign(plAngle);
+  void opSubAssign(plAngle);
+  bool opEquals(const plAngle&in) const;
+  int opCmp(const plAngle&in) const;
+  plAngle opMul(float) const;
+  plAngle opMul_r(float) const;
+  plAngle opDiv(float) const;
+  float opDiv(const plAngle&in) const;
+}
+
+class plQuat
+{
+  float x;
+  float y;
+  float z;
+  float w;
+
+  void SetIdentity();
+  void ReconstructFromMat3(const plMat3&in);
+  void ReconstructFromMat4(const plMat3&in);
+  void Normalize();
+  void GetRotationAxisAndAngle(plVec3&out, plAngle&out, float fEpsilon = 0.00001) const;
+  plVec3 GetVectorPart() const;
+  plMat3 GetAsMat3() const;
+  plMat3 GetAsMat4() const;
+  bool IsValid(float fEpsilon = 0.00001) const;
+  bool IsNaN() const;
+  bool IsEqualRotation(const plQuat&in, float fEpsilon = 0.00001) const;
+  void Invert();
+  plQuat GetInverse() const;
+  plQuat GetNegated() const;
+  float Dot(const plQuat&in) const;
+  plVec3 Rotate(const plVec3&in) const;
+  void GetAsEulerAngles(float&out, float&out, float&out) const;
+  plQuat opMul(const plQuat&in) const;
+  plVec3 opMul(const plVec3&in) const;
+  bool opEquals(const plQuat&in) const;
+}
+
+class plMat3
+{
+}
+
+class plMat4
+{
+}
+
+class plTransform
+{
+  plVec3 m_vPosition;
+  plQuat m_qRotation;
+  plVec3 m_vScale;
+
+  plTransform(const plVec3&in vPosition, const plQuat&in qRotation = plQuat::MakeIdentity(), const plVec3&in vScale = plVec3(1));
+
+  void SetIdentity();
+  float GetMaxScale() const;
+  bool HasMirrorScaling() const;
+  bool ContainsUniformScale() const;
+  bool IsValid() const;
+  bool IsIdentical(const plTransform&in) const;
+  bool IsEqual(const plTransform&in, float fEpsilon) const;
+  void Invert();
+  plTransform GetInverse() const;
+  plVec3 TransformPosition(const plVec3&in vPosition) const;
+  plVec3 TransformDirection(const plVec3&in vDirection) const;
+  void opAddAssign(const plVec3&in);
+  void opSubAssign(const plVec3&in);
+  plMat4 GetAsMat4() const;
+  plVec3 opMul(const plVec3&in) const;
+  plTransform opMul_r(const plQuat&in qRotation) const;
+  plTransform opMul(const plQuat&in qRotation) const;
+  plTransform opAdd(const plVec3&in) const;
+  plTransform opSub(const plVec3&in) const;
+  plTransform opMul(const plTransform&in) const;
+  bool opEquals(const plTransform&in) const;
+}
+
+class plTime
+{
+  bool IsZero() const;
+  bool IsNegative() const;
+  bool IsPositive() const;
+  bool IsZeroOrNegative() const;
+  bool IsZeroOrPositive() const;
+  float AsFloatInSeconds() const;
+  double GetNanoseconds() const;
+  double GetMicroseconds() const;
+  double GetMilliseconds() const;
+  double GetSeconds() const;
+  double GetMinutes() const;
+  double GetHours() const;
+  void opSubAssign(const plTime&in);
+  void opAddAssign(const plTime&in);
+  void opMulAssign(double);
+  void opDivAssign(double);
+  plTime opSub(const plTime&in) const;
+  plTime opAdd(const plTime&in) const;
+  plTime opNeg() const;
+  int opCmp(const plTime&in) const;
+  bool opEquals(const plTime&in) const;
+  plTime opMul(double) const;
+  plTime opMul_r(double) const;
+  plTime opMul(const plTime&in) const;
+  plTime opDiv(double) const;
+  plTime opDiv_r(double) const;
+  plTime opDiv(const plTime&in) const;
+}
+
+class plColor
+{
+  float r;
+  float g;
+  float b;
+  float a;
+
+  plColor(float r, float g, float b, float a = 1.0f);
+  plColor(const plColorGammaUB&in);
+
+  void opAssign(const plColorGammaUB&in);
+  void opAddAssign(const plColor&in);
+  void opSubAssign(const plColor&in);
+  void opMulAssign(const plColor&in);
+  void opMulAssign(float);
+  void opDivAssign(float);
+  void opMulAssign(const plMat4&in);
+  plColor opAdd(const plColor&in) const;
+  plColor opSub(const plColor&in) const;
+  plColor opMul(const plColor&in) const;
+  plColor opMul(float) const;
+  plColor opMul_r(float) const;
+  plColor opDiv(float) const;
+  plColor opMul_r(const plMat4&in) const;
+  bool opEquals(const plColor&in) const;
+  void SetRGB(float r, float g, float b);
+  void SetRGBA(float r, float g, float b, float a = 1.0f);
+  void GetHSV(float&out fHue, float&out fSaturation, float&out fValue) const;
+  plVec4 GetAsVec4() const;
+  bool IsNormalized() const;
+  float CalcAverageRGB() const;
+  float GetSaturation() const;
+  float GetLuminance() const;
+  plColor GetInvertedColor() const;
+  plColor GetComplementaryColor() const;
+  void ScaleRGB(float);
+  void ScaleRGBA(float);
+  float ComputeHdrMultiplier() const;
+  float ComputeHdrExposureValue() const;
+  void ApplyHdrExposureValue(float fExposure);
+  void NormalizeToLdrRange();
+  plColor GetDarker(float fFactor = 2.0f) const;
+  bool IsNaN() const;
+  bool IsValid() const;
+  bool IsIdenticalRGB(const plColor&in) const;
+  bool IsIdenticalRGBA(const plColor&in) const;
+  bool IsEqualRGB(const plColor&in, float fEpsilon) const;
+  bool IsEqualRGBA(const plColor&in, float fEpsilon) const;
+  plColor WithAlpha(float fAlpha) const;
+}
+
+class plColorGammaUB
+{
+  uint8 r;
+  uint8 g;
+  uint8 b;
+  uint8 a;
+
+  plColorGammaUB(uint8 r, uint8 g, uint8 b, uint8 a = 255);
+  plColorGammaUB(const plColor&in);
+
+  void opAssign(const plColor&in);
+  plColor ToLinearFloat() const;
+}
+
+[BuiltinString]
+class plStringView
+{
+  plStringView();
+  plStringView(const plStringView);
+  plStringView(const plString&in);
+  plStringView(const plHashedString&in);
+  plStringView(const plStringBuilder&in);
+
+  bool StartsWith(plStringView) const;
+  bool StartsWith_NoCase(plStringView) const;
+  bool EndsWith(plStringView) const;
+  bool EndsWith_NoCase(plStringView) const;
+  int Compare(plStringView) const;
+  int Compare_NoCase(plStringView) const;
+  int CompareN(plStringView, uint) const;
+  int CompareN_NoCase(plStringView, uint) const;
+  uint GetElementCount() const;
+  bool IsEmpty() const;
+  bool IsEqual(plStringView) const;
+  bool IsEqual_NoCase(plStringView) const;
+  bool IsEqualN(plStringView, uint) const;
+  bool IsEqualN_NoCase(plStringView, uint) const;
+  bool HasAnyExtension() const;
+  bool HasExtension(plStringView) const;
+  plStringView GetFileExtension(bool full = false) const;
+  plStringView GetFileName() const;
+  plStringView GetFileNameAndExtension() const;
+  plStringView GetFileDirectory() const;
+  bool IsAbsolutePath() const;
+  bool IsRelativePath() const;
+  bool IsRootedPath() const;
+  bool GetRootedPathRootName() const;
+  void Shrink(uint uiShrinkCharsFront, uint uiShrinkCharsBack);
+  plStringView GetShrunk(uint uiShrinkCharsFront, uint uiShrinkCharsBack = 0) const;
+  plStringView GetSubString(uint uiFirstCharacter, uint uiNumCharacters) const;
+  void ChopAwayFirstCharacterUtf8();
+  void ChopAwayFirstCharacterAscii();
+  bool TrimWordStart(plStringView sWord);
+  bool TrimWordEnd(plStringView sWord);
+  bool opEquals(const plStringView&in) const;
+  int opCmp(const plStringView&in) const;
+  void opAssign(const plString&in);
+  void opAssign(const plHashedString&in);
+  void opAssign(const plStringBuilder&in);
+}
+
+class plGameObjectHandle
+{
+  plGameObjectHandle();
+
+  void Invalidate();
+  bool IsInvalidated() const;
+  bool opEquals(plGameObjectHandle) const;
+}
+
+class plComponentHandle
+{
+  plComponentHandle();
+
+  void Invalidate();
+  bool IsInvalidated() const;
+  bool opEquals(plComponentHandle) const;
+}
+
+[BuiltinString]
+class plTempHashedString
+{
+  plTempHashedString();
+  plTempHashedString(const plTempHashedString&in);
+  plTempHashedString(const plStringView);
+  plTempHashedString(const plHashedString&in);
+
+  void opAssign(plStringView);
+  void opAssign(const plHashedString&in);
+  bool opEquals(plTempHashedString) const;
+  bool IsEmpty() const;
+  void Clear();
+}
+
+[BuiltinString]
+class plHashedString
+{
+  plHashedString();
+  plHashedString(const plStringView);
+  plHashedString(const plHashedString&in);
+
+  void opAssign(const plStringView);
+  bool IsEmpty() const;
+  void Clear();
+  void Assign(const plStringView);
+  bool opEquals(const plHashedString&in) const;
+  bool opEquals(const plTempHashedString&in) const;
+  bool opEquals(const plStringView) const;
+  plStringView GetView() const;
+}
+
+[BuiltinString]
+class plString
+{
+  plString();
+  plString(const plStringView);
+  plString(const plString&in);
+  plString(const plStringBuilder&in);
+  plString(const plHashedString&in);
+
+  bool StartsWith(plStringView) const;
+  bool StartsWith_NoCase(plStringView) const;
+  bool EndsWith(plStringView) const;
+  bool EndsWith_NoCase(plStringView) const;
+  int Compare(plStringView) const;
+  int Compare_NoCase(plStringView) const;
+  int CompareN(plStringView, uint) const;
+  int CompareN_NoCase(plStringView, uint) const;
+  uint GetElementCount() const;
+  bool IsEmpty() const;
+  bool IsEqual(plStringView) const;
+  bool IsEqual_NoCase(plStringView) const;
+  bool IsEqualN(plStringView, uint) const;
+  bool IsEqualN_NoCase(plStringView, uint) const;
+  bool HasAnyExtension() const;
+  bool HasExtension(plStringView) const;
+  plStringView GetFileExtension(bool full = false) const;
+  plStringView GetFileName() const;
+  plStringView GetFileNameAndExtension() const;
+  plStringView GetFileDirectory() const;
+  bool IsAbsolutePath() const;
+  bool IsRelativePath() const;
+  bool IsRootedPath() const;
+  bool GetRootedPathRootName() const;
+  plStringView GetView() const;
+  int opCmp(const plString&in) const;
+  void opAssign(const plStringView);
+  void opAssign(const plString&in);
+  void opAssign(const plStringBuilder&in);
+  void opAssign(const plHashedString&in);
+  void Clear();
+}
+
+[BuiltinString]
+class plStringBuilder
+{
+  plStringBuilder();
+  plStringBuilder(const plStringView s1);
+  plStringBuilder(const plStringView&in, const plStringView&in);
+  plStringBuilder(const plStringView&in, const plStringView&in, const plStringView&in);
+  plStringBuilder(const plStringView&in, const plStringView&in, const plStringView&in, const plStringView&in);
+
+  bool StartsWith(plStringView) const;
+  bool StartsWith_NoCase(plStringView) const;
+  bool EndsWith(plStringView) const;
+  bool EndsWith_NoCase(plStringView) const;
+  int Compare(plStringView) const;
+  int Compare_NoCase(plStringView) const;
+  int CompareN(plStringView, uint) const;
+  int CompareN_NoCase(plStringView, uint) const;
+  uint GetElementCount() const;
+  bool IsEmpty() const;
+  bool IsEqual(plStringView) const;
+  bool IsEqual_NoCase(plStringView) const;
+  bool IsEqualN(plStringView, uint) const;
+  bool IsEqualN_NoCase(plStringView, uint) const;
+  bool HasAnyExtension() const;
+  bool HasExtension(plStringView) const;
+  plStringView GetFileExtension(bool full = false) const;
+  plStringView GetFileName() const;
+  plStringView GetFileNameAndExtension() const;
+  plStringView GetFileDirectory() const;
+  bool IsAbsolutePath() const;
+  bool IsRelativePath() const;
+  bool IsRootedPath() const;
+  bool GetRootedPathRootName() const;
+  void opAssign(const plStringBuilder&in rhs);
+  void opAssign(plStringView rhs);
+  void opAssign(const plString&in rhs);
+  plStringView GetView() const;
+  void Clear();
+  uint GetCharacterCount() const;
+  void ToUpper();
+  void ToLower();
+  void Set(plStringView sData1);
+  void Set(plStringView sData1, plStringView sData2);
+  void Set(plStringView sData1, plStringView sData2, plStringView sData3);
+  void Set(plStringView sData1, plStringView sData2, plStringView sData3, plStringView sData4);
+  void Set(plStringView sData1, plStringView sData2, plStringView sData3, plStringView sData4, plStringView sData5, plStringView sData6 = "");
+  void SetPath(plStringView sData1, plStringView sData2, plStringView sData3 = "", plStringView sData4 = "");
+  void Append(plStringView sData1);
+  void Append(plStringView sData1, plStringView sData2);
+  void Append(plStringView sData1, plStringView sData2, plStringView sData3);
+  void Append(plStringView sData1, plStringView sData2, plStringView sData3, plStringView sData4);
+  void Append(plStringView sData1, plStringView sData2, plStringView sData3, plStringView sData4, plStringView sData5, plStringView sData6 = "");
+  void Prepend(plStringView sData1, plStringView sData2 = "", plStringView sData3 = "", plStringView sData4 = "", plStringView sData5 = "", plStringView sData6 = "");
+  void SetFormat(plStringView sText, ?&in VarArg1);
+  void SetFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2);
+  void SetFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3);
+  void SetFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4);
+  void SetFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5);
+  void SetFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6);
+  void SetFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6, ?&in VarArg7);
+  void SetFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6, ?&in VarArg7, ?&in VarArg8);
+  void AppendFormat(plStringView sText, ?&in VarArg1);
+  void AppendFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2);
+  void AppendFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3);
+  void AppendFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4);
+  void AppendFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5);
+  void AppendFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6);
+  void AppendFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6, ?&in VarArg7);
+  void AppendFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6, ?&in VarArg7, ?&in VarArg8);
+  void PrependFormat(plStringView sText, ?&in VarArg1);
+  void PrependFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2);
+  void PrependFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3);
+  void PrependFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4);
+  void PrependFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5);
+  void PrependFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6);
+  void PrependFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6, ?&in VarArg7);
+  void PrependFormat(plStringView sText, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6, ?&in VarArg7, ?&in VarArg8);
+  void Shrink(uint uiShrinkCharsFront, uint uiShrinkCharsBack);
+  void Reserve(uint uiNumElements);
+  uint ReplaceAll(plStringView sSearchFor, plStringView sReplacement);
+  uint ReplaceAll_NoCase(plStringView sSearchFor, plStringView sReplacement);
+  void MakeCleanPath();
+  void PathParentDirectory(uint uiLevelsUp = 1);
+  void AppendPath(plStringView sPath1, plStringView sPath2 = "", plStringView sPath3 = "", plStringView sPath4 = "");
+  void AppendWithSeparator(plStringView sSeparator, plStringView sData1, plStringView sData2 = "", plStringView sData3 = "", plStringView sData4 = "", plStringView sData5 = "", plStringView sData6 = "");
+  void ChangeFileName(plStringView sNewFileName);
+  void ChangeFileNameAndExtension(plStringView sNewFileNameWithExtension);
+  void ChangeFileExtension(plStringView sNewExtension, bool bFullExtension = false);
+  void RemoveFileExtension(bool bFullExtension = false);
+  bool TrimWordStart(plStringView sWord);
+  bool TrimWordEnd(plStringView sWord);
+}
+
+class plGameObject
+{
+  plGameObjectHandle GetHandle() const;
+  void MakeDynamic();
+  void MakeStatic();
+  bool IsDynamic() const;
+  bool IsStatic() const;
+  void SetActiveFlag(bool bActive);
+  bool GetActiveFlag() const;
+  bool IsActive() const;
+  void SetName(plStringView sName);
+  void SetName(const plHashedString&in sName);
+  plStringView GetName() const;
+  bool HasName(const plTempHashedString&in sName) const;
+  void SetGlobalKey(plStringView sKey);
+  void SetGlobalKey(const plHashedString&in sKey);
+  plStringView GetGlobalKey() const;
+  void SetParent(const plGameObjectHandle&in hParent, plTransformPreservation preserve = plTransformPreservation::PreserveGlobal);
+  plGameObject@ GetParent() const;
+  plGameObject@ GetParent();
+  void AddChild(const plGameObjectHandle&in hChild, plTransformPreservation preserve = plTransformPreservation::PreserveGlobal);
+  void DetachChild(const plGameObjectHandle&in hChild, plTransformPreservation preserve = plTransformPreservation::PreserveGlobal);
+  uint GetChildCount();
+  plGameObject@ FindChildByName(const plTempHashedString&in sName, bool bRecursive = true);
+  plGameObject@ FindChildByPath(plStringView sPath);
+  plWorld@ GetWorld();
+  const plWorld@ GetWorld() const;
+  void SetLocalPosition(const plVec3&in);
+  plVec3 GetLocalPosition() const;
+  void SetLocalRotation(const plQuat&in);
+  plQuat GetLocalRotation() const;
+  void SetLocalScaling(const plVec3&in);
+  plVec3 GetLocalScaling() const;
+  void SetLocalUniformScaling(float fScale);
+  float GetLocalUniformScaling() const;
+  plTransform GetLocalTransform() const;
+  void SetGlobalPosition(const plVec3&in);
+  plVec3 GetGlobalPosition() const;
+  void SetGlobalRotation(const plQuat&in);
+  plQuat GetGlobalRotation() const;
+  void SetGlobalScaling(const plVec3&in);
+  plVec3 GetGlobalScaling() const;
+  void SetGlobalTransform(const plTransform&in);
+  plTransform GetGlobalTransform() const;
+  plTransform GetLastGlobalTransform() const;
+  plVec3 GetGlobalDirForwards() const;
+  plVec3 GetGlobalDirRight() const;
+  plVec3 GetGlobalDirUp() const;
+  void SetGlobalRotationToLookAt(const plVec3&in vTargetPosition, const plVec3&in vUp = plVec3(0, 0, 1));
+  void SetGlobalTransformToLookAt(const plVec3&in vOwnPosition, const plVec3&in vTargetPosition, const plVec3&in vUp = plVec3(0, 0, 1));
+  plVec3 GetLinearVelocity() const;
+  plVec3 GetAngularVelocity() const;
+  void UpdateGlobalTransform();
+  void UpdateLocalBounds();
+  void UpdateGlobalBounds();
+  void UpdateGlobalTransformAndBounds();
+  bool TryGetComponentOfBaseType(const plRTTI@ pType, plComponent@&out pComponent);
+  bool TryGetComponentOfBaseType(?&out pTypedComponent);
+  bool CreateComponent(?&out pTypedComponent);
+  uint16 GetComponentVersion();
+  bool SendMessage(plMessage&inout);
+  bool SendMessage(plMessage&inout) const;
+  bool SendMessageRecursive(plMessage&inout);
+  bool SendMessageRecursive(plMessage&inout) const;
+  void PostMessage(const plMessage&in, plTime delay, plObjectMsgQueueType delivery = plObjectMsgQueueType::NextFrame) const;
+  void PostMessageRecursive(const plMessage&in, plTime delay, plObjectMsgQueueType delivery = plObjectMsgQueueType::NextFrame) const;
+  bool SendEventMessage(plMessage&inout, const plComponent@ pSender);
+  bool SendEventMessage(plMessage&inout, const plComponent@ pSender) const;
+  void PostEventMessage(const plMessage&in msg, const plComponent@ pSender, plTime delay, plObjectMsgQueueType delivery = plObjectMsgQueueType::NextFrame) const;
+  bool HasTag(const plTempHashedString&in sTagName) const;
+  uint16 GetTeamID();
+  void SetTeamID(uint16 id);
+  uint GetStableRandomSeed();
+  void SetStableRandomSeed(uint seed);
+  void SendMessage(plAngelScriptMessage&inout);
+  void SendMessage(plAngelScriptMessage&inout) const;
+  void SendMessageRecursive(plAngelScriptMessage&inout);
+  void SendMessageRecursive(plAngelScriptMessage&inout) const;
+  void PostMessage(const plAngelScriptMessage&in, plTime delay, plObjectMsgQueueType delivery = plObjectMsgQueueType::NextFrame);
+  void PostMessageRecursive(const plAngelScriptMessage&in, plTime delay, plObjectMsgQueueType delivery = plObjectMsgQueueType::NextFrame);
+}
+
+class plComponent
+{
+  bool IsActive() const;
+  bool IsActiveAndInitialized() const;
+  bool IsActiveAndSimulating() const;
+  plGameObject@ GetOwner() const;
+  plWorld@ GetWorld() const;
+  uint GetUniqueID() const;
+  void DeleteComponent();
+  void Initialize();
+  void Deinitialize();
+  void OnActivated();
+  void OnDeactivated();
+  void OnSimulationStarted();
+  void Update(plTime DeltaTime);
+  bool Active;
+  plCollectionComponent@ opCast();
+  plForwardEventsToGameStateComponent@ opCast();
+  plPrefabReferenceComponent@ opCast();
+  plScriptComponent@ opCast();
+  plEventMessageHandlerComponent@ opCast();
+  plSettingsComponent@ opCast();
+  plSkeletonComponent@ opCast();
+  plSkeletonPoseComponent@ opCast();
+  plBakedProbesComponent@ opCast();
+  plBakedProbesVolumeComponent@ opCast();
+  plAlwaysVisibleComponent@ opCast();
+  plAtmosphericScatteringComponent@ opCast();
+  plBeamComponent@ opCast();
+  plCameraComponent@ opCast();
+  plFogComponent@ opCast();
+  plLensFlareComponent@ opCast();
+  plLodComponent@ opCast();
+  plOccluderComponent@ opCast();
+  plRenderComponent@ opCast();
+  plRenderTargetActivatorComponent@ opCast();
+  plRopeRenderComponent@ opCast();
+  plSkyBoxComponent@ opCast();
+  plSnowComponent@ opCast();
+  plSplineComponent@ opCast();
+  plSplineNodeComponent@ opCast();
+  plSpriteComponent@ opCast();
+  plDebugTextComponent@ opCast();
+  plDecalComponent@ opCast();
+  plAmbientLightComponent@ opCast();
+  plBoxReflectionProbeComponent@ opCast();
+  plCylinderLightComponent@ opCast();
+  plDDGIVolumeComponent@ opCast();
+  plDirectionalLightComponent@ opCast();
+  plDiskLightComponent@ opCast();
+  plFillLightComponent@ opCast();
+  plFogVolumeComponent@ opCast();
+  plLightComponent@ opCast();
+  plPointLightComponent@ opCast();
+  plRectLightComponent@ opCast();
+  plReflectionProbeComponentBase@ opCast();
+  plSkyLightComponent@ opCast();
+  plSphereReflectionProbeComponent@ opCast();
+  plSpotLightComponent@ opCast();
+  plVolumetricCloudsComponent@ opCast();
+  plVolumetricFogComponent@ opCast();
+  plCustomMeshComponent@ opCast();
+  plHairComponent@ opCast();
+  plInstancedMeshComponent@ opCast();
+  plLodMeshComponent@ opCast();
+  plMeshComponent@ opCast();
+  plMeshComponentBase@ opCast();
+  plSplineMeshComponent@ opCast();
+  plSensorComponent@ opCast();
+  plSensorSphereComponent@ opCast();
+  plSensorCylinderComponent@ opCast();
+  plSensorConeComponent@ opCast();
+  plColorAnimationComponent@ opCast();
+  plFollowSplineComponent@ opCast();
+  plPropertyAnimComponent@ opCast();
+  plResetTransformComponent@ opCast();
+  plRotorComponent@ opCast();
+  plSliderComponent@ opCast();
+  plTransformComponent@ opCast();
+  plAimIKComponent@ opCast();
+  plAnimatedMeshComponent@ opCast();
+  plAnimationControllerComponent@ opCast();
+  plJointAttachmentComponent@ opCast();
+  plJointOverrideComponent@ opCast();
+  plLodAnimatedMeshComponent@ opCast();
+  plSimpleAnimationComponent@ opCast();
+  plTwoBoneIKComponent@ opCast();
+  plPostProcessingComponent@ opCast();
+  plSimpleWindComponent@ opCast();
+  plWindVolumeComponent@ opCast();
+  plWindVolumeSphereComponent@ opCast();
+  plWindVolumeCylinderComponent@ opCast();
+  plWindVolumeConeComponent@ opCast();
+  plBlackboardComponent@ opCast();
+  plLocalBlackboardComponent@ opCast();
+  plGlobalBlackboardComponent@ opCast();
+  plGrabbableItemComponent@ opCast();
+  plGreyBoxComponent@ opCast();
+  plInputComponent@ opCast();
+  plMarkerComponent@ opCast();
+  plPlayerStartPointComponent@ opCast();
+  plSceneTransitionComponent@ opCast();
+  plSpawnBoxComponent@ opCast();
+  plSpawnComponent@ opCast();
+  plTimedDeathComponent@ opCast();
+  plTriggerDelayModifierComponent@ opCast();
+  plStateMachineComponent@ opCast();
+  plVolumeComponent@ opCast();
+  plVolumeSphereComponent@ opCast();
+  plVolumeBoxComponent@ opCast();
+  plDeviceTrackingComponent@ opCast();
+  plSpatialAnchorComponent@ opCast();
+  plStageSpaceComponent@ opCast();
+  plVisualizeHandComponent@ opCast();
+  plAudioAnimationComponent@ opCast();
+  plAudioBankLoaderComponent@ opCast();
+  plAudioBoxEnvironmentComponent@ opCast();
+  plAudioListenerComponent@ opCast();
+  plAudioProxyComponent@ opCast();
+  plAudioRtpcComponent@ opCast();
+  plAudioSphereEnvironmentComponent@ opCast();
+  plAudioSwitchStateComponent@ opCast();
+  plAudioSystemComponent@ opCast();
+  plAudioSystemProxyDependentComponent@ opCast();
+  plAudioSystemEnvironmentComponent@ opCast();
+  plAudioTriggerComponent@ opCast();
+  plJoltActorComponent@ opCast();
+  plJoltDynamicActorComponent@ opCast();
+  plJoltQueryShapeActorComponent@ opCast();
+  plJoltStaticActorComponent@ opCast();
+  plJoltTriggerComponent@ opCast();
+  plJoltCharacterControllerComponent@ opCast();
+  plJoltDefaultCharacterComponent@ opCast();
+  plJoltBreakableSlabComponent@ opCast();
+  plJoltClothSheetComponent@ opCast();
+  plJoltHitboxComponent@ opCast();
+  plJoltRagdollComponent@ opCast();
+  plJoltRopeComponent@ opCast();
+  plJoltSettingsComponent@ opCast();
+  plJoltVegetationRodComponent@ opCast();
+  plJoltVisColMeshComponent@ opCast();
+  plJoltWaterVolumeComponent@ opCast();
+  plJoltConeConstraintComponent@ opCast();
+  plJoltConstraintComponent@ opCast();
+  plJoltDistanceConstraintComponent@ opCast();
+  plJoltFixedConstraintComponent@ opCast();
+  plJoltGrabObjectComponent@ opCast();
+  plJoltHingeConstraintComponent@ opCast();
+  plJoltPointConstraintComponent@ opCast();
+  plJoltSliderConstraintComponent@ opCast();
+  plJoltSwingTwistConstraintComponent@ opCast();
+  plJoltShapeBoxComponent@ opCast();
+  plJoltShapeCapsuleComponent@ opCast();
+  plJoltShapeComponent@ opCast();
+  plJoltShapeConvexHullComponent@ opCast();
+  plJoltShapeCylinderComponent@ opCast();
+  plJoltShapeSphereComponent@ opCast();
+  plCommentComponent@ opCast();
+  plShapeIconComponent@ opCast();
+  bool SendMessage(plMessage&inout ref_msg);
+  bool SendMessage(plMessage&inout ref_msg) const;
+  void PostMessage(const plMessage&in msg, plTime delay = plTime::MakeZero(), plObjectMsgQueueType queueType = plObjectMsgQueueType::NextFrame) const;
+  plComponentHandle GetHandle() const;
+}
+
+class plWorld
+{
+  plStringView GetName();
+  plGameObjectHandle CreateObject(const plGameObjectDesc&in desc);
+  plGameObjectHandle CreateObject(const plGameObjectDesc&in desc, plGameObject@&out object);
+  void DeleteObjectDelayed(const plGameObjectHandle&in hObject, bool bAlsoDeleteEmptyParents = true);
+  bool IsValidObject(const plGameObjectHandle&in hObject);
+  bool TryGetObject(const plGameObjectHandle&in, plGameObject@&out pObject);
+  bool TryGetObject(const plGameObjectHandle&in, const plGameObject@&out pObject) const;
+  bool TryGetObjectWithGlobalKey(const plTempHashedString&in sGlobalKey, plGameObject@&out pObject);
+  bool TryGetObjectWithGlobalKey(const plTempHashedString&in sGlobalKey, const plGameObject@&out pObject);
+  plGameObject@ SearchForObject(plStringView sSearchPath, plGameObject@ pStartSearchObj = null, const plRTTI@ pExpectedComponent = null);
+  bool IsValidComponent(plComponentHandle&in);
+  bool TryGetComponent(const plComponentHandle&in hComponent, ?&out component);
+  void SendMessage(const plGameObjectHandle&in hReceiverObject, plMessage&inout msg);
+  void SendMessageRecursive(const plGameObjectHandle&in hReceiverObject, plMessage&inout msg);
+  void PostMessage(const plGameObjectHandle&in hReceiverObject, const plMessage&in msg, plTime delay, plObjectMsgQueueType queueType = plObjectMsgQueueType::NextFrame) const;
+  void PostMessageRecursive(const plGameObjectHandle&in hReceiverObject, const plMessage&in msg, plTime delay, plObjectMsgQueueType queueType = plObjectMsgQueueType::NextFrame) const;
+  void SendMessage(const plComponentHandle&in hReceiverObject, plMessage&inout msg);
+  void PostMessage(const plComponentHandle&in hReceiverObject, const plMessage&in msg, plTime delay, plObjectMsgQueueType queueType = plObjectMsgQueueType::NextFrame) const;
+  plClock@ GetClock();
+  const plClock@ GetClock() const;
+  plRandom@ GetRandomNumberGenerator();
+  void SendMessage(const plGameObjectHandle&in hReceiverObject, plAngelScriptMessage&inout);
+  void SendMessageRecursive(const plGameObjectHandle&in hReceiverObject, plAngelScriptMessage&inout);
+  void PostMessage(const plGameObjectHandle&in hReceiverObject, const plAngelScriptMessage&in, plTime delay, plObjectMsgQueueType delivery = plObjectMsgQueueType::NextFrame);
+  void PostMessageRecursive(const plGameObjectHandle&in hReceiverObject, const plAngelScriptMessage&in, plTime delay, plObjectMsgQueueType delivery = plObjectMsgQueueType::NextFrame);
+}
+
+class plMessage
+{
+  plMsgPhysicsAddImpulse@ opCast();
+  plMsgPhysicCharacterContact@ opCast();
+  plMsgPhysicContact@ opCast();
+  plMsgPhysicsJointBroke@ opCast();
+  plMsgObjectGrabbed@ opCast();
+  plMsgReleaseObjectGrab@ opCast();
+  plMsgOnlyApplyToObject@ opCast();
+  plEventMessage@ opCast();
+  plMsgCollision@ opCast();
+  plMsgDeleteGameObject@ opCast();
+  plMsgComponentInternalTrigger@ opCast();
+  plMsgSetPlaying@ opCast();
+  plMsgInterruptPlaying@ opCast();
+  plMsgSetFloatParameter@ opCast();
+  plMsgGenericEvent@ opCast();
+  plMsgAnimationReachedEnd@ opCast();
+  plMsgTriggerTriggered@ opCast();
+  plMsgEditorToolConfig@ opCast();
+  plMsgSetColor@ opCast();
+  plMsgSetCustomData@ opCast();
+  plMsgApplyRootMotion@ opCast();
+  plMsgSplineChanged@ opCast();
+  plMsgSetMeshMaterial@ opCast();
+  plMsgSensorDetectedObjectsChanged@ opCast();
+  plMsgBlackboardEntryChanged@ opCast();
+  plMsgInputActionTriggered@ opCast();
+  plMsgDamage@ opCast();
+  plMsgExport@ opCast();
+  plMsgMoveCharacterController@ opCast();
+  plMsgStateMachineStateChanged@ opCast();
+  plMsgAudioSystemSetRtpcValue@ opCast();
+  plMsgAudioSystemRtpcValueChanged@ opCast();
+  plMsgAudioSystemSetSwitchState@ opCast();
+  plMsgAudioSystemSwitchStateChanged@ opCast();
+  plMsgAudioSystemSetEnvironmentAmount@ opCast();
+  plMsgDeliverAngelScriptMsg@ opCast();
+  plJoltMsgDisconnectConstraints@ opCast();
+}
+
+class plClock
+{
+  void SetPaused(bool);
+  bool GetPaused() const;
+  plTime GetTimeDiff() const;
+  void SetSpeed(double);
+  double GetSpeed() const;
+  plTime GetAccumulatedTime() const;
+}
+
+class plRandom
+{
+  uint UInt();
+  uint UIntInRange(uint uiRange);
+  int IntMinMax(int iMinValue, int iMaxValue);
+  bool Bool();
+  double DoubleZeroToOneExclusive();
+  double DoubleZeroToOneInclusive();
+  double DoubleMinMax(double fMinValue, double fMaxValue);
+  double DoubleVariance(double fValue, double fVariance);
+  double DoubleVarianceAroundZero(double fAbsMaxValue);
+  float FloatZeroToOneExclusive();
+  float FloatZeroToOneInclusive();
+  float FloatMinMax(float fMinValue, float fMaxValue);
+  float FloatVariance(float fValue, float fVariance);
+  float FloatVarianceAroundZero(float fAbsMaxValue);
+}
+
+class plGameObjectDesc
+{
+  bool m_bActiveFlag;
+  bool m_bDynamic;
+  uint16 m_uiTeamID;
+  plHashedString m_sName;
+  plGameObjectHandle m_hParent;
+  plVec3 m_LocalPosition;
+  plQuat m_LocalRotation;
+  plVec3 m_LocalScaling;
+  float m_LocalUniformScaling;
+  uint m_uiStableRandomSeed;
+
+  plGameObjectDesc();
+
+}
+
+class plCollectionComponent : plComponent
+{
+  plString Collection;
+  bool RegisterNames;
+}
+
+class plEventMessageHandlerComponent : plComponent
+{
+  bool HandleGlobalEvents;
+  bool PassThroughUnhandledEvents;
+  plForwardEventsToGameStateComponent@ opCast();
+  plScriptComponent@ opCast();
+  plAudioAnimationComponent@ opCast();
+}
+
+class plForwardEventsToGameStateComponent : plEventMessageHandlerComponent
+{
+}
+
+class plPrefabReferenceComponent : plComponent
+{
+  plString Prefab;
+}
+
+class plScriptComponent : plEventMessageHandlerComponent
+{
+  void SetScriptVariable(plHashedString Name, ?&in Value);
+  bool GetScriptVariable_asBool(plHashedString Name) const;
+  int GetScriptVariable_asInt32(plHashedString Name) const;
+  float GetScriptVariable_asFloat(plHashedString Name) const;
+  plTime GetScriptVariable_asTime(plHashedString Name) const;
+  plAngle GetScriptVariable_asAngle(plHashedString Name) const;
+  plVec2 GetScriptVariable_asVec2(plHashedString Name) const;
+  plVec3 GetScriptVariable_asVec3(plHashedString Name) const;
+  plVec4 GetScriptVariable_asVec4(plHashedString Name) const;
+  plQuat GetScriptVariable_asQuat(plHashedString Name) const;
+  plColor GetScriptVariable_asColor(plHashedString Name) const;
+  plString GetScriptVariable_asString(plHashedString Name) const;
+  plGameObjectHandle GetScriptVariable_asGameObjectHandle(plHashedString Name) const;
+  plComponentHandle GetScriptVariable_asComponentHandle(plHashedString Name) const;
+  plTime UpdateInterval;
+  plStringView ScriptClass;
+  void BroadcastEventMsg(const plEventMessage&in msg);
+}
+
+class plSettingsComponent : plComponent
+{
+  plBakedProbesComponent@ opCast();
+  plFogComponent@ opCast();
+  plSnowComponent@ opCast();
+  plAmbientLightComponent@ opCast();
+  plSkyLightComponent@ opCast();
+  plVolumetricCloudsComponent@ opCast();
+  plVolumetricFogComponent@ opCast();
+  plJoltSettingsComponent@ opCast();
+}
+
+class plRenderComponent : plComponent
+{
+  plSkeletonComponent@ opCast();
+  plAlwaysVisibleComponent@ opCast();
+  plAtmosphericScatteringComponent@ opCast();
+  plBeamComponent@ opCast();
+  plLensFlareComponent@ opCast();
+  plLodComponent@ opCast();
+  plRenderTargetActivatorComponent@ opCast();
+  plRopeRenderComponent@ opCast();
+  plSkyBoxComponent@ opCast();
+  plSpriteComponent@ opCast();
+  plDecalComponent@ opCast();
+  plCylinderLightComponent@ opCast();
+  plDDGIVolumeComponent@ opCast();
+  plDirectionalLightComponent@ opCast();
+  plDiskLightComponent@ opCast();
+  plFillLightComponent@ opCast();
+  plLightComponent@ opCast();
+  plPointLightComponent@ opCast();
+  plRectLightComponent@ opCast();
+  plSpotLightComponent@ opCast();
+  plCustomMeshComponent@ opCast();
+  plHairComponent@ opCast();
+  plInstancedMeshComponent@ opCast();
+  plLodMeshComponent@ opCast();
+  plMeshComponent@ opCast();
+  plMeshComponentBase@ opCast();
+  plSplineMeshComponent@ opCast();
+  plAnimatedMeshComponent@ opCast();
+  plLodAnimatedMeshComponent@ opCast();
+  plGreyBoxComponent@ opCast();
+  plJoltBreakableSlabComponent@ opCast();
+  plJoltClothSheetComponent@ opCast();
+  plJoltVisColMeshComponent@ opCast();
+}
+
+class plSkeletonComponent : plRenderComponent
+{
+  plStringView Skeleton;
+  bool VisualizeSkeleton;
+  bool VisualizeColliders;
+  bool VisualizeJoints;
+  bool VisualizeSwingLimits;
+  bool VisualizeTwistLimits;
+  plString BonesToHighlight;
+}
+
+class plSkeletonPoseComponent : plComponent
+{
+  plStringView Skeleton;
+  plSkeletonPoseMode Mode;
+  float EditBones;
+}
+
+class plBakedProbesComponent : plSettingsComponent
+{
+  bool ShowDebugOverlay;
+  bool ShowDebugProbes;
+  bool UseTestPosition;
+  plVec3 TestPosition;
+}
+
+class plBakedProbesVolumeComponent : plComponent
+{
+  plVec3 Extents;
+}
+
+class plAlwaysVisibleComponent : plRenderComponent
+{
+}
+
+class plAtmosphericScatteringComponent : plRenderComponent
+{
+  float PlanetRadius;
+  float AtmosphereRadius;
+  plColor RayleighScattering;
+  plColor MieScattering;
+  plColor Absorption;
+  plColor AmbientScattering;
+  float MieScatterDirection;
+  float RayleighHeight;
+  float MieHeight;
+  float AbsorptionHeight;
+  float AbsorptionFalloff;
+  float RaySteps;
+  float LightSteps;
+}
+
+class plBeamComponent : plRenderComponent
+{
+  plString TargetObject;
+  plStringView Material;
+  plColor Color;
+  float Width;
+  float UVUnitsPerWorldUnit;
+}
+
+class plCameraComponent : plComponent
+{
+  int8 EditorShortcut;
+  plCameraUsageHint UsageHint;
+  plCameraMode Mode;
+  plStringView RenderTarget;
+  plVec2 RenderTargetOffset;
+  plVec2 RenderTargetSize;
+  float NearPlane;
+  float FarPlane;
+  float FOV;
+  float Dimensions;
+  plString CameraRenderPipeline;
+  float Aperture;
+  plTime ShutterTime;
+  float ISO;
+  float ExposureCompensation;
+  bool ShowStats;
+}
+
+class plFogComponent : plSettingsComponent
+{
+  plColor Color;
+  float Density;
+  float StartDistance;
+  float HeightFalloff;
+  bool ModulateWithSkyColor;
+  float SkyDistance;
+}
+
+class plLensFlareComponent : plRenderComponent
+{
+  bool LinkToLightShape;
+  float Intensity;
+  plColorGammaUB LightColor;
+  float OcclusionSampleRadius;
+  float OcclusionSampleSpread;
+  float OcclusionDepthOffset;
+  bool ApplyFog;
+}
+
+class plLodComponent : plRenderComponent
+{
+  plVec3 BoundsOffset;
+  float BoundsRadius;
+  bool ShowDebugInfo;
+  bool OverlapRanges;
+}
+
+class plOccluderComponent : plComponent
+{
+  plOccluderType Type;
+  plVec3 Extents;
+  plStringView Mesh;
+}
+
+class plRenderTargetActivatorComponent : plRenderComponent
+{
+  plStringView RenderTarget;
+}
+
+class plRopeRenderComponent : plRenderComponent
+{
+  plStringView Material;
+  plColor Color;
+  float Thickness;
+  uint32 Detail;
+  bool Subdivide;
+  float UScale;
+}
+
+class plSkyBoxComponent : plRenderComponent
+{
+  plStringView CubeMap;
+  float ExposureBias;
+  bool InverseTonemap;
+  bool UseFog;
+  float VirtualDistance;
+}
+
+class plSnowComponent : plSettingsComponent
+{
+  float SnowTiling;
+  float SnowStrength;
+  float SnowWrapping;
+  float SnowWrappingNoise;
+  float SnowBreakup;
+  float SnowBreakupTiling;
+  plStringView Diffuse;
+  plStringView Normal;
+  plStringView ORM;
+  plStringView Noise;
+  plStringView Displacement;
+}
+
+class plSplineComponent : plComponent
+{
+  plVec3 GetPositionAtKey(float Key, plSplineComponentSpace Space) const;
+  plVec3 GetForwardDirAtKey(float Key, plSplineComponentSpace Space) const;
+  plVec3 GetUpDirAtKey(float Key, plSplineComponentSpace Space) const;
+  plVec3 GetScaleAtKey(float Key, plSplineComponentSpace Space) const;
+  plTransform GetTransformAtKey(float Key, plSplineComponentSpace Space) const;
+  float GetTotalLength() const;
+  float GetKeyAtDistance(float Distance) const;
+  plVec3 GetPositionAtDistance(float Distance, plSplineComponentSpace Space) const;
+  plVec3 GetForwardDirAtDistance(float Distance, plSplineComponentSpace Space) const;
+  plVec3 GetUpDirAtDistance(float Distance, plSplineComponentSpace Space) const;
+  plVec3 GetScaleAtDistance(float Distance, plSplineComponentSpace Space) const;
+  plTransform GetTransformAtDistance(float Distance, plSplineComponentSpace Space) const;
+  float FindKeyClosestToPoint(plVec3 Point, float&out DistanceToPoint, plSplineComponentSpace Space, float MaxError = 0.1) const;
+  uint GetChangeCounter() const;
+  plSplineComponentFlags Flags;
+  bool Closed;
+  uint8 EditNodes;
+}
+
+class plSplineNodeComponent : plComponent
+{
+  plAngle Roll;
+  plSplineTangentMode TangentModeIn;
+  plVec3 CustomTangentIn;
+  plSplineTangentMode TangentModeOut;
+  plVec3 CustomTangentOut;
+  bool LinkCustomTangents;
+}
+
+class plSpriteComponent : plRenderComponent
+{
+  plStringView Texture;
+  plSpriteBlendMode BlendMode;
+  plColor Color;
+  float Size;
+  float MaxScreenSize;
+  float AspectRatio;
+}
+
+class plDebugTextComponent : plComponent
+{
+  plString Text;
+  float Value0;
+  float Value1;
+  float Value2;
+  float Value3;
+  plColorGammaUB Color;
+}
+
+class plDecalComponent : plRenderComponent
+{
+  plBasisAxis ProjectionAxis;
+  plVec3 Extents;
+  float SizeVariance;
+  plColorGammaUB Color;
+  plColor EmissiveColor;
+  float SortOrder;
+  bool WrapAround;
+  bool MapNormalToGeometry;
+  plAngle InnerFadeAngle;
+  plAngle OuterFadeAngle;
+  plTime FadeOutDuration;
+  plOnComponentFinishedAction OnFinishedAction;
+  plString ApplyToDynamic;
+}
+
+class plAmbientLightComponent : plSettingsComponent
+{
+  plColorGammaUB TopColor;
+  plColorGammaUB BottomColor;
+  float Intensity;
+}
+
+class plReflectionProbeComponentBase : plComponent
+{
+  plReflectionProbeMode ReflectionProbeMode;
+  float NearPlane;
+  float FarPlane;
+  plVec3 CaptureOffset;
+  bool ShowDebugInfo;
+  bool ShowMipMaps;
+  plBoxReflectionProbeComponent@ opCast();
+  plSphereReflectionProbeComponent@ opCast();
+}
+
+class plBoxReflectionProbeComponent : plReflectionProbeComponentBase
+{
+  plVec3 Extents;
+  plVec3 InfluenceScale;
+  plVec3 InfluenceShift;
+  plVec3 PositiveFalloff;
+  plVec3 NegativeFalloff;
+  bool BoxProjection;
+}
+
+class plLightComponent : plRenderComponent
+{
+  plColorGammaUB EffectiveColor;
+  bool UseColorTemperature;
+  plColorGammaUB LightColor;
+  uint32 Temperature;
+  float Intensity;
+  float SpecularMultiplier;
+  float VolumetricIntensity;
+  bool CastShadows;
+  bool SkipGI;
+  float GIMultiplier;
+  bool TransparentShadows;
+  float PenumbraSize;
+  float SlopeBias;
+  float ConstantBias;
+  plCylinderLightComponent@ opCast();
+  plDirectionalLightComponent@ opCast();
+  plDiskLightComponent@ opCast();
+  plPointLightComponent@ opCast();
+  plRectLightComponent@ opCast();
+  plSpotLightComponent@ opCast();
+}
+
+class plCylinderLightComponent : plLightComponent
+{
+  float Radius;
+  float Length;
+  float Range;
+  float Falloff;
+  bool EndCaps;
+}
+
+class plDDGIVolumeComponent : plRenderComponent
+{
+  plVec3 Extent;
+  uint32 ProbeCountX;
+  uint32 ProbeCountY;
+  uint32 ProbeCountZ;
+  uint32 RaysPerProbe;
+  float MaxRayDistance;
+  float Hysteresis;
+  float Intensity;
+  float SkyFadeout;
+  float NormalBias;
+  float ViewBias;
+  float DepthSharpness;
+  bool ShowDebugProbes;
+}
+
+class plDirectionalLightComponent : plLightComponent
+{
+  uint32 NumCascades;
+  float MinShadowRange;
+  float FadeOutStart;
+  float SplitModeWeight;
+  float NearPlaneOffset;
+}
+
+class plDiskLightComponent : plLightComponent
+{
+  float Radius;
+  float Range;
+  float Falloff;
+  bool TwoSided;
+}
+
+class plFillLightComponent : plRenderComponent
+{
+  plColorGammaUB EffectiveColor;
+  plFillLightMode LightMode;
+  bool UseColorTemperature;
+  plColorGammaUB LightColor;
+  uint32 Temperature;
+  float Intensity;
+  float Range;
+  float FalloffExponent;
+  float Directionality;
+  bool SkipGI;
+  float GIMultiplier;
+}
+
+class plFogVolumeComponent : plComponent
+{
+  plVec3 Extents;
+  float Density;
+  plColor Albedo;
+  plColor AmbientLight;
+  float FalloffExponent;
+  float Anisotropy;
+}
+
+class plPointLightComponent : plLightComponent
+{
+  float Range;
+  float Falloff;
+  float ShadowFadeOutRange;
+}
+
+class plRectLightComponent : plLightComponent
+{
+  float Width;
+  float Height;
+  float Range;
+  float Falloff;
+  bool TwoSided;
+  plStringView Cookie;
+  plStringView Material;
+  uint32 MaterialResolution;
+  plTime MaterialUpdateInterval;
+}
+
+class plSkyLightComponent : plSettingsComponent
+{
+  plReflectionProbeMode ReflectionProbeMode;
+  plStringView CubeMap;
+  float DiffuseIntensity;
+  float DiffuseSaturation;
+  float SpecularIntensity;
+  float NearPlane;
+  float FarPlane;
+  bool ShowDebugInfo;
+  bool ShowMipMaps;
+}
+
+class plSphereReflectionProbeComponent : plReflectionProbeComponentBase
+{
+  float Radius;
+  float Falloff;
+  bool SphereProjection;
+}
+
+class plSpotLightComponent : plLightComponent
+{
+  float Range;
+  float Falloff;
+  plAngle InnerSpotAngle;
+  plAngle OuterSpotAngle;
+  float ShadowFadeOutRange;
+  plStringView Cookie;
+  plStringView Material;
+  uint32 MaterialResolution;
+  plTime MaterialUpdateInterval;
+}
+
+class plVolumetricCloudsComponent : plSettingsComponent
+{
+  plVec4 AltitudeGradient;
+  plVec4 AltitudeGradient2;
+  float CloudLayerBottom;
+  float CloudLayerTop;
+  float Coverage;
+  float Density;
+  float CloudLayer2Bottom;
+  float CloudLayer2Top;
+  float Coverage2;
+  float Density2;
+  float WindSpeed2;
+  float Absorption;
+  float WindSpeed;
+  float PhaseG;
+  float PhaseG2;
+  float PhaseBlend;
+  float MultiScatteringScattering;
+  float MultiScatteringExtinction;
+  float MultiScatteringEccentricity;
+  float SilverLiningIntensity;
+  float SilverLiningSpread;
+  float RenderDistance;
+  float PlanetRadius;
+  plColor AmbientColor;
+  float AmbientGroundMultiplier;
+  float HorizonBlendAmount;
+  float HorizonBlendPower;
+}
+
+class plVolumetricFogComponent : plSettingsComponent
+{
+  float Density;
+  float Anisotropy;
+  float HeightFalloff;
+  plColor Albedo;
+  plColor AmbientLight;
+  float StartDistance;
+  float NearPlane;
+  float FarPlane;
+  float TemporalBlendWeight;
+}
+
+class plWeatherComponent : plSettingsComponent
+{
+  plStringView WeatherMap;
+  plVec2 WeatherMapOffset;
+  float WeatherMapScale;
+  float CloudCoverageMultiplier;
+  float CloudCoverageBias;
+  float CloudTypeBias;
+  float PrecipitationMultiplier;
+}
+
+class plCustomMeshComponent : plRenderComponent
+{
+  plColor Color;
+  plVec4 CustomData;
+  plStringView Material;
+}
+
+class plHairComponent : plRenderComponent
+{
+  plHairRenderMode RenderMode;
+  plStringView StrandResource;
+  plStringView StrandMaterial;
+  float WidthScale;
+  float StrandDensity;
+  plStringView CardMesh;
+  plColor Color;
+  float SortingDepthOffset;
+  float WindInfluence;
+  float GravityStrength;
+  float Stiffness;
+}
+
+class plMeshComponentBase : plRenderComponent
+{
+  plInstancedMeshComponent@ opCast();
+  plMeshComponent@ opCast();
+  plSplineMeshComponent@ opCast();
+  plAnimatedMeshComponent@ opCast();
+}
+
+class plInstancedMeshComponent : plMeshComponentBase
+{
+  plStringView Mesh;
+  plColor MainColor;
+  plVec4 CustomData;
+}
+
+class plLodMeshComponent : plRenderComponent
+{
+  plColor Color;
+  plVec4 CustomData;
+  float SortingDepthOffset;
+  plVec3 BoundsOffset;
+  float BoundsRadius;
+  bool ShowDebugInfo;
+  bool OverlapRanges;
+}
+
+class plMeshComponent : plMeshComponentBase
+{
+  plStringView Mesh;
+  plColor Color;
+  plVec4 CustomData;
+  float SortingDepthOffset;
+}
+
+class plSplineMeshComponent : plMeshComponentBase
+{
+  plSplineMeshDistributionMode DistributionMode;
+  int32 Seed;
+  float OffsetY;
+  float OffsetZ;
+  plColor Color;
+  plVec4 CustomData;
+  float SortingDepthOffset;
+}
+
+class plSensorComponent : plComponent
+{
+  uint GetDetectedObjectsCount() const;
+  plGameObjectHandle GetDetectedObject(uint uiIndex) const;
+  plUpdateRate UpdateRate;
+  plString SpatialCategory;
+  bool TestVisibility;
+  uint8 CollisionLayer;
+  bool ShowDebugInfo;
+  plColorGammaUB Color;
+  plSensorSphereComponent@ opCast();
+  plSensorCylinderComponent@ opCast();
+  plSensorConeComponent@ opCast();
+}
+
+class plSensorSphereComponent : plSensorComponent
+{
+  float Radius;
+}
+
+class plSensorCylinderComponent : plSensorComponent
+{
+  float Radius;
+  float Height;
+}
+
+class plSensorConeComponent : plSensorComponent
+{
+  float NearDistance;
+  float FarDistance;
+  plAngle Angle;
+}
+
+class plColorAnimationComponent : plComponent
+{
+  plString Gradient;
+  plTime Duration;
+  plSetColorMode SetColorMode;
+  plPropertyAnimMode AnimationMode;
+  bool RandomStartOffset;
+  bool ApplyToChildren;
+}
+
+class plFollowSplineComponent : plComponent
+{
+  void SetCurrentDistance(float Distance);
+  float GetCurrentDistance() const;
+  void SetDirectionForwards(bool Forwards);
+  bool IsDirectionForwards() const;
+  void ToggleDirection();
+  plString Spline;
+  float StartDistance;
+  bool Running;
+  plPropertyAnimMode Mode;
+  float Speed;
+  float LookAhead;
+  float Smoothing;
+  plFollowSplineMode FollowMode;
+  float TiltAmount;
+  plAngle MaxTilt;
+}
+
+class plPropertyAnimComponent : plComponent
+{
+  void PlayAnimationRange(plTime RangeLow, plTime RangeHigh);
+  plString Animation;
+  bool Playing;
+  plPropertyAnimMode Mode;
+  plTime RandomOffset;
+  float Speed;
+  plTime RangeLow;
+  plTime RangeHigh;
+}
+
+class plResetTransformComponent : plComponent
+{
+  bool ResetPositionX;
+  bool ResetPositionY;
+  bool ResetPositionZ;
+  plVec3 LocalPosition;
+  bool ResetRotation;
+  plQuat LocalRotation;
+  bool ResetScaling;
+  plVec3 LocalScaling;
+  float LocalUniformScaling;
+}
+
+class plTransformComponent : plComponent
+{
+  void SetDirectionForwards(bool Forwards);
+  bool IsDirectionForwards() const;
+  void ToggleDirection();
+  float Speed;
+  bool Running;
+  bool ReverseAtEnd;
+  bool ReverseAtStart;
+  plRotorComponent@ opCast();
+  plSliderComponent@ opCast();
+}
+
+class plRotorComponent : plTransformComponent
+{
+  plBasisAxis Axis;
+  plAngle AxisDeviation;
+  int32 DegreesToRotate;
+  float Acceleration;
+  float Deceleration;
+}
+
+class plSliderComponent : plTransformComponent
+{
+  plBasisAxis Axis;
+  float Distance;
+  float Acceleration;
+  float Deceleration;
+  plTime RandomStart;
+}
+
+class plAimIKComponent : plComponent
+{
+  float DebugVisScale;
+  plBasisAxis ForwardVector;
+  plBasisAxis UpVector;
+  plString PoleVector;
+  bool InversePoleVector;
+  float Weight;
+  uint16 Order;
+}
+
+class plAnimatedMeshComponent : plMeshComponentBase
+{
+  plStringView Mesh;
+  plColor Color;
+  plVec4 CustomData;
+}
+
+class plAnimationControllerComponent : plComponent
+{
+  plStringView AnimGraph;
+  plRootMotionMode RootMotionMode;
+  plAnimationInvisibleUpdateRate InvisibleUpdateRate;
+  bool EnableIK;
+}
+
+class plJointAttachmentComponent : plComponent
+{
+  plString JointName;
+  plVec3 PositionOffset;
+  plQuat RotationOffset;
+}
+
+class plJointOverrideComponent : plComponent
+{
+  plString JointName;
+  bool OverridePosition;
+  bool OverrideRotation;
+  bool OverrideScale;
+}
+
+class plLodAnimatedMeshComponent : plRenderComponent
+{
+  plColor Color;
+  plVec4 CustomData;
+  float SortingDepthOffset;
+  plVec3 BoundsOffset;
+  float BoundsRadius;
+  bool ShowDebugInfo;
+  bool OverlapRanges;
+}
+
+class plSimpleAnimationComponent : plComponent
+{
+  plString AnimationClip;
+  plPropertyAnimMode AnimationMode;
+  float Speed;
+  plRootMotionMode RootMotionMode;
+  plAnimationInvisibleUpdateRate InvisibleUpdateRate;
+  bool EnableIK;
+}
+
+class plTwoBoneIKComponent : plComponent
+{
+  float DebugVisScale;
+  plHashedString JointStart;
+  plHashedString JointMiddle;
+  plHashedString JointEnd;
+  plBasisAxis MidAxis;
+  plString PoleVector;
+  float Weight;
+  uint16 Order;
+}
+
+class plPostProcessingComponent : plComponent
+{
+  plString VolumeType;
+}
+
+class plSimpleWindComponent : plComponent
+{
+  plWindStrength MinWindStrength;
+  plWindStrength MaxWindStrength;
+  plAngle MaxDeviation;
+}
+
+class plWindVolumeComponent : plComponent
+{
+  plWindStrength Strength;
+  float StrengthFactor;
+  plTime BurstDuration;
+  plOnComponentFinishedAction OnFinishedAction;
+  plWindVolumeSphereComponent@ opCast();
+  plWindVolumeCylinderComponent@ opCast();
+  plWindVolumeConeComponent@ opCast();
+}
+
+class plWindVolumeSphereComponent : plWindVolumeComponent
+{
+  float Radius;
+}
+
+class plWindVolumeCylinderComponent : plWindVolumeComponent
+{
+  float Radius;
+  float RadiusFalloff;
+  float Length;
+  float PositiveFalloff;
+  float NegativeFalloff;
+  plWindVolumeCylinderMode Mode;
+}
+
+class plWindVolumeConeComponent : plWindVolumeComponent
+{
+  plAngle Angle;
+  float Length;
+}
+
+class plBlackboardComponent : plComponent
+{
+  void SetEntryValue(plString Name, ?&in Value);
+  bool GetEntryValue_asBool(plString Name) const;
+  int GetEntryValue_asInt32(plString Name) const;
+  float GetEntryValue_asFloat(plString Name) const;
+  plTime GetEntryValue_asTime(plString Name) const;
+  plAngle GetEntryValue_asAngle(plString Name) const;
+  plVec2 GetEntryValue_asVec2(plString Name) const;
+  plVec3 GetEntryValue_asVec3(plString Name) const;
+  plVec4 GetEntryValue_asVec4(plString Name) const;
+  plQuat GetEntryValue_asQuat(plString Name) const;
+  plColor GetEntryValue_asColor(plString Name) const;
+  plString GetEntryValue_asString(plString Name) const;
+  plGameObjectHandle GetEntryValue_asGameObjectHandle(plString Name) const;
+  plComponentHandle GetEntryValue_asComponentHandle(plString Name) const;
+  plString Template;
+  bool ShowDebugInfo;
+  plLocalBlackboardComponent@ opCast();
+  plGlobalBlackboardComponent@ opCast();
+}
+
+class plLocalBlackboardComponent : plBlackboardComponent
+{
+  plString BlackboardName;
+  bool SendEntryChangedMessage;
+}
+
+class plGlobalBlackboardComponent : plBlackboardComponent
+{
+  plString BlackboardName;
+  plGlobalBlackboardInitMode InitMode;
+}
+
+class plGrabbableItemComponent : plComponent
+{
+  bool DebugShowPoints;
+}
+
+class plGreyBoxComponent : plRenderComponent
+{
+  plGreyBoxShape Shape;
+  plString Material;
+  plColor Color;
+  plVec4 CustomData;
+  float SizeNegX;
+  float SizePosX;
+  float SizeNegY;
+  float SizePosY;
+  float SizeNegZ;
+  float SizePosZ;
+  uint32 Detail;
+  plAngle Curvature;
+  float Thickness;
+  bool SlopedTop;
+  bool SlopedBottom;
+  bool GenerateCollision;
+  bool IncludeInNavmesh;
+  bool UseAsOccluder;
+}
+
+class plInputComponent : plComponent
+{
+  float GetCurrentInputState(plString InputAction, bool OnlyKeyPressed) const;
+  plString InputSet;
+  plInputMessageGranularity Granularity;
+  bool ForwardToBlackboard;
+}
+
+class plMarkerComponent : plComponent
+{
+  plString Marker;
+  float Radius;
+}
+
+class plPlayerStartPointComponent : plComponent
+{
+  plString PlayerPrefab;
+}
+
+class plSceneTransitionComponent : plComponent
+{
+  void StartTransition(plVec3 PositionOffset, plQuat RotationOffset);
+  void StartTransitionWithOffsetTo(plVec3 GlobalPosition, plQuat GlobalRotation);
+  void StartPreload();
+  void CancelPreload();
+  plSceneLoadMode Mode;
+  plHashedString TargetScene;
+  plHashedString PreloadCollection;
+  plHashedString SpawnPoint;
+  bool RelativeSpawnPosition;
+}
+
+class plSpawnBoxComponent : plComponent
+{
+  void StartSpawning();
+  plVec3 HalfExtents;
+  plString Prefab;
+  bool SpawnAtStart;
+  bool SpawnContinuously;
+  uint16 MinSpawnCount;
+  uint16 SpawnCountRange;
+  plTime Duration;
+  plAngle MaxRotationZ;
+  plAngle MaxTiltZ;
+}
+
+class plSpawnComponent : plComponent
+{
+  bool CanTriggerManualSpawn() const;
+  bool TriggerManualSpawn(bool IgnoreSpawnDelay, plVec3 LocalOffset);
+  void ScheduleSpawn();
+  plStringView Prefab;
+  bool AttachAsChild;
+  bool SpawnAtStart;
+  bool SpawnContinuously;
+  plTime MinDelay;
+  plTime DelayRange;
+  plAngle Deviation;
+}
+
+class plTimedDeathComponent : plComponent
+{
+  plTime MinDelay;
+  plTime DelayRange;
+  plString TimeoutPrefab;
+}
+
+class plTriggerDelayModifierComponent : plComponent
+{
+  plTime ActivationDelay;
+  plTime DeactivationDelay;
+}
+
+class plStateMachineComponent : plComponent
+{
+  bool SetState(plStringView Name);
+  plStringView GetCurrentState() const;
+  void FireTransitionEvent(plStringView Name);
+  plString Resource;
+  plString InitialState;
+  plString BlackboardName;
+}
+
+class plVolumeComponent : plComponent
+{
+  void SetValue(plHashedString Name, ?&in Value);
+  bool GetValue_asBool(plTempHashedString Name) const;
+  int GetValue_asInt32(plTempHashedString Name) const;
+  float GetValue_asFloat(plTempHashedString Name) const;
+  plTime GetValue_asTime(plTempHashedString Name) const;
+  plAngle GetValue_asAngle(plTempHashedString Name) const;
+  plVec2 GetValue_asVec2(plTempHashedString Name) const;
+  plVec3 GetValue_asVec3(plTempHashedString Name) const;
+  plVec4 GetValue_asVec4(plTempHashedString Name) const;
+  plQuat GetValue_asQuat(plTempHashedString Name) const;
+  plColor GetValue_asColor(plTempHashedString Name) const;
+  plString GetValue_asString(plTempHashedString Name) const;
+  plGameObjectHandle GetValue_asGameObjectHandle(plTempHashedString Name) const;
+  plComponentHandle GetValue_asComponentHandle(plTempHashedString Name) const;
+  plString Type;
+  float SortOrder;
+  plString Template;
+  plVolumeSphereComponent@ opCast();
+  plVolumeBoxComponent@ opCast();
+}
+
+class plVolumeSphereComponent : plVolumeComponent
+{
+  float Radius;
+  float Falloff;
+}
+
+class plVolumeBoxComponent : plVolumeComponent
+{
+  plVec3 Extents;
+  plVec3 Falloff;
+}
+
+class plDeviceTrackingComponent : plComponent
+{
+  plXRDeviceType DeviceType;
+  plXRPoseLocation PoseLocation;
+  plXRTransformSpace TransformSpace;
+  bool Rotation;
+  bool Scale;
+}
+
+class plSpatialAnchorComponent : plComponent
+{
+}
+
+class plStageSpaceComponent : plComponent
+{
+  plXRStageSpace StageSpace;
+}
+
+class plVisualizeHandComponent : plComponent
+{
+}
+
+class plAudioAnimationComponent : plEventMessageHandlerComponent
+{
+}
+
+class plAudioSystemComponent : plComponent
+{
+  plAudioBankLoaderComponent@ opCast();
+  plAudioBoxEnvironmentComponent@ opCast();
+  plAudioListenerComponent@ opCast();
+  plAudioProxyComponent@ opCast();
+  plAudioRtpcComponent@ opCast();
+  plAudioSphereEnvironmentComponent@ opCast();
+  plAudioSwitchStateComponent@ opCast();
+  plAudioSystemProxyDependentComponent@ opCast();
+  plAudioSystemEnvironmentComponent@ opCast();
+  plAudioTriggerComponent@ opCast();
+}
+
+class plAudioSystemProxyDependentComponent : plAudioSystemComponent
+{
+  plAudioBankLoaderComponent@ opCast();
+  plAudioBoxEnvironmentComponent@ opCast();
+  plAudioRtpcComponent@ opCast();
+  plAudioSphereEnvironmentComponent@ opCast();
+  plAudioSwitchStateComponent@ opCast();
+  plAudioSystemEnvironmentComponent@ opCast();
+  plAudioTriggerComponent@ opCast();
+}
+
+class plAudioBankLoaderComponent : plAudioSystemProxyDependentComponent
+{
+  void LoadBanks(bool Sync);
+  void UnloadBanks(bool Sync);
+  bool LoadOnInit;
+  bool UnloadOnDeactivated;
+}
+
+class plAudioSystemEnvironmentComponent : plAudioSystemProxyDependentComponent
+{
+  plString Environment;
+  float MaxDistance;
+  plColor Color;
+  plAudioBoxEnvironmentComponent@ opCast();
+  plAudioSphereEnvironmentComponent@ opCast();
+}
+
+class plAudioBoxEnvironmentComponent : plAudioSystemEnvironmentComponent
+{
+  plVec3 HalfExtends;
+}
+
+class plAudioListenerComponent : plAudioSystemComponent
+{
+  plString PositionGameObject;
+  plString RotationGameObject;
+  bool IsDefault;
+  plVec3 PositionOffset;
+}
+
+class plAudioProxyComponent : plAudioSystemComponent
+{
+}
+
+class plAudioRtpcComponent : plAudioSystemProxyDependentComponent
+{
+  void SetValue(float Value, bool Sync);
+  float GetValue() const;
+  plString Rtpc;
+  float InitialValue;
+  float Value;
+}
+
+class plAudioSphereEnvironmentComponent : plAudioSystemEnvironmentComponent
+{
+  float Radius;
+}
+
+class plAudioSwitchStateComponent : plAudioSystemProxyDependentComponent
+{
+  void SetState(plString State, bool Sync);
+  plString GetState() const;
+  plString InitialValue;
+  plString State;
+}
+
+class plAudioTriggerComponent : plAudioSystemProxyDependentComponent
+{
+  void Play(bool Sync);
+  void Stop(bool Sync);
+  void SetPlayTrigger(plString PlayTrigger);
+  void SetStopTrigger(plString StopTrigger);
+  plString GetPlayTrigger() const;
+  plString GetStopTrigger() const;
+  plString PlayTrigger;
+  plString StopTrigger;
+  plAudioSystemSoundObstructionType SoundObstructionType;
+  uint8 OcclusionCollisionLayer;
+  bool LoadOnInit;
+  bool PlayOnActivate;
+  bool Looping;
+  plOnComponentFinishedAction OnFinishedAction;
+  bool IsLoading;
+  bool IsReady;
+  bool IsStarting;
+  bool IsPlaying;
+  bool IsStopping;
+  bool IsStopped;
+  bool IsUnloading;
+}
+
+class plJoltActorComponent : plComponent
+{
+  uint GetObjectFilterID() const;
+  uint8 CollisionLayer;
+  plJoltDynamicActorComponent@ opCast();
+  plJoltQueryShapeActorComponent@ opCast();
+  plJoltStaticActorComponent@ opCast();
+  plJoltTriggerComponent@ opCast();
+}
+
+class plJoltDynamicActorComponent : plJoltActorComponent
+{
+  void AddLinearImpulse(plVec3 vImpulse, uint8 uiImpulseType = 0);
+  void AddAngularImpulse(plVec3 vImpulse, uint8 uiImpulseType = 0);
+  uint AddOrUpdateForce(uint uiForceID, plTime duration, plVec3 vForce);
+  void ClearForce(uint uiForceID);
+  bool Kinematic;
+  bool StartAsleep;
+  bool AllowSleeping;
+  uint8 WeightCategory;
+  float WeightScale;
+  float Mass;
+  float Density;
+  plStringView Surface;
+  float GravityFactor;
+  float LinearDamping;
+  float AngularDamping;
+  bool ContinuousCollisionDetection;
+  plOnJoltContact OnContact;
+  bool CustomCenterOfMass;
+  plVec3 CenterOfMass;
+}
+
+class plJoltQueryShapeActorComponent : plJoltActorComponent
+{
+  plStringView Surface;
+}
+
+class plJoltStaticActorComponent : plJoltActorComponent
+{
+  plStringView CollisionMesh;
+  bool PullSurfacesFromGraphicsMesh;
+  plStringView Surface;
+}
+
+class plJoltTriggerComponent : plJoltActorComponent
+{
+  plString TriggerMessage;
+}
+
+class plJoltCharacterControllerComponent : plComponent
+{
+  uint8 CollisionLayer;
+  uint8 PresenceCollisionLayer;
+  uint8 WeightCategory;
+  float WeightScale;
+  float Mass;
+  float Strength;
+  plAngle MaxClimbingSlope;
+  plJoltCharacterDebugFlags DebugFlags;
+  plJoltDefaultCharacterComponent@ opCast();
+}
+
+class plJoltDefaultCharacterComponent : plJoltCharacterControllerComponent
+{
+  void TeleportCharacter(plVec3 globalFootPosition);
+  bool IsStandingOnGround() const;
+  bool IsSlidingOnGround() const;
+  bool IsInAir() const;
+  bool IsCrouching() const;
+  void Jump();
+  void Run();
+  void Crouch();
+  void RotateZ(float Amount);
+  void Move(float Forward, float Right);
+  float ShapeRadius;
+  float CrouchHeight;
+  float StandHeight;
+  float FootRadius;
+  float WalkSpeedCrouching;
+  float WalkSpeedStanding;
+  float WalkSpeedRunning;
+  float AirSpeed;
+  float AirFriction;
+  plAngle RotateSpeed;
+  float MaxStepUp;
+  float MaxStepDown;
+  float JumpImpulse;
+  plString WalkSurfaceInteraction;
+  float WalkInteractionDistance;
+  float RunInteractionDistance;
+  plStringView FallbackWalkSurface;
+  plString HeadObject;
+}
+
+class plJoltBreakableSlabComponent : plRenderComponent
+{
+  void Restore();
+  void ShatterCellular(plVec3 vGlobalPosition, float fCellSize, plVec3 vImpulse, float fMakeDynamicRadius);
+  void ShatterRadial(plVec3 vGlobalPosition, float fImpactRadius, plVec3 vImpulse, float fMakeDynamicRadius);
+  void ShatterAll(float fShardSize, plVec3 vImpulse);
+  float Width;
+  float Height;
+  float Thickness;
+  plStringView Material;
+  plVec2 UVScale;
+  uint8 CollisionLayerStatic;
+  uint8 CollisionLayerDynamic;
+  plJoltBreakableShape Shape;
+  plJoltBreakableSlabFlags Flags;
+  float GravityFactor;
+  float ContactReportForceThreshold;
+}
+
+class plJoltClothSheetComponent : plRenderComponent
+{
+  plVec2 Size;
+  uint8 CollisionLayer;
+  float WindInfluence;
+  float GravityFactor;
+  float Damping;
+  float Thickness;
+  plJoltClothSheetFlags Flags;
+  plStringView Material;
+  plVec2 TextureScale;
+  plColor Color;
+}
+
+class plJoltHitboxComponent : plComponent
+{
+  uint GetObjectFilterID() const;
+  void RecreatePhysicsShapes();
+  bool QueryShapeOnly;
+  plTime UpdateThreshold;
+}
+
+class plJoltRagdollComponent : plComponent
+{
+  uint GetObjectFilterID() const;
+  void SetInitialImpulse(plVec3 vWorldPosition, plVec3 vWorldDirectionAndStrength);
+  void AddInitialImpulse(plVec3 vWorldPosition, plVec3 vWorldDirectionAndStrength);
+  void SetJointTypeOverride(plStringView sJointName, plSkeletonJointType overrideType);
+  void SetJointMotorStrength(float fStrength);
+  float GetJointMotorStrength() const;
+  void FadeJointMotorStrength(float fTargetStrength, plTime tDuration);
+  bool SelfCollision;
+  plJoltRagdollStartMode StartMode;
+  plJoltRagdollAnimMode AnimMode;
+  float GravityFactor;
+  uint8 WeightCategory;
+  float WeightScale;
+  float Mass;
+  float StiffnessFactor;
+  float OwnerVelocityScale;
+  plVec3 CenterPosition;
+  float CenterVelocity;
+  float CenterAngularVelocity;
+}
+
+class plJoltRopeComponent : plComponent
+{
+  plString Anchor1;
+  plString Anchor2;
+  plJoltRopeAnchorConstraintMode Anchor1Constraint;
+  plJoltRopeAnchorConstraintMode Anchor2Constraint;
+  uint16 Pieces;
+  float Slack;
+  uint8 WeightCategory;
+  float WeightScale;
+  float Mass;
+  float Thickness;
+  float BendStiffness;
+  plAngle MaxBend;
+  plAngle MaxTwist;
+  uint8 CollisionLayer;
+  plStringView Surface;
+  float GravityFactor;
+  bool SelfCollision;
+  bool ContinuousCollisionDetection;
+}
+
+class plJoltSettingsComponent : plSettingsComponent
+{
+  plVec3 ObjectGravity;
+  plVec3 CharacterGravity;
+  plJoltSteppingMode SteppingMode;
+  float FixedFrameRate;
+  uint32 MaxSubSteps;
+  uint32 MaxBodies;
+  float SleepVelocityThreshold;
+}
+
+class plJoltVegetationRodComponent : plComponent
+{
+  plStringView Skeleton;
+  float GravityFactor;
+  float WindInfluence;
+  float Damping;
+  float Stiffness;
+  float BendStiffness;
+  uint8 CollisionLayer;
+  bool FixedRoot;
+  bool VisualizeRods;
+}
+
+class plJoltVisColMeshComponent : plRenderComponent
+{
+  plStringView CollisionMesh;
+}
+
+class plJoltWaterVolumeComponent : plComponent
+{
+  plVec3 Extents;
+  plVec2 LocalFlow;
+}
+
+class plJoltConstraintComponent : plComponent
+{
+  bool PairCollision;
+  plString ParentActor;
+  plString ChildActor;
+  plString ChildActorAnchor;
+  float BreakForce;
+  float BreakTorque;
+  plJoltConeConstraintComponent@ opCast();
+  plJoltDistanceConstraintComponent@ opCast();
+  plJoltFixedConstraintComponent@ opCast();
+  plJoltHingeConstraintComponent@ opCast();
+  plJoltPointConstraintComponent@ opCast();
+  plJoltSliderConstraintComponent@ opCast();
+  plJoltSwingTwistConstraintComponent@ opCast();
+}
+
+class plJoltConeConstraintComponent : plJoltConstraintComponent
+{
+  plAngle ConeAngle;
+}
+
+class plJoltDistanceConstraintComponent : plJoltConstraintComponent
+{
+  float MinDistance;
+  float MaxDistance;
+  float Frequency;
+  float Damping;
+}
+
+class plJoltFixedConstraintComponent : plJoltConstraintComponent
+{
+}
+
+class plJoltGrabObjectComponent : plComponent
+{
+  bool GrabNearbyObject();
+  bool HasObjectGrabbed() const;
+  void DropGrabbedObject();
+  void ThrowGrabbedObject(plVec3 vDirection, uint8 uiImpulseType = 0);
+  void BreakObjectGrab();
+  float MaxGrabPointDistance;
+  float CastRadius;
+  uint8 CollisionLayer;
+  float SpringStiffness;
+  float SpringDamping;
+  float BreakDistance;
+  plString AttachTo;
+  float GrabAnyObjectWithSize;
+}
+
+class plJoltHingeConstraintComponent : plJoltConstraintComponent
+{
+  plJoltConstraintLimitMode LimitMode;
+  plAngle LowerLimit;
+  plAngle UpperLimit;
+  float Friction;
+  plJoltConstraintDriveMode DriveMode;
+  plAngle DriveTargetValue;
+  float DriveStrength;
+}
+
+class plJoltPointConstraintComponent : plJoltConstraintComponent
+{
+}
+
+class plJoltSliderConstraintComponent : plJoltConstraintComponent
+{
+  plJoltConstraintLimitMode LimitMode;
+  float LowerLimit;
+  float UpperLimit;
+  float Friction;
+  plJoltConstraintDriveMode DriveMode;
+  float DriveTargetValue;
+  float DriveStrength;
+}
+
+class plJoltSwingTwistConstraintComponent : plJoltConstraintComponent
+{
+  plAngle SwingLimitY;
+  plAngle SwingLimitZ;
+  float Friction;
+  plAngle LowerTwistLimit;
+  plAngle UpperTwistLimit;
+}
+
+class plJoltShapeComponent : plComponent
+{
+  plJoltShapeBoxComponent@ opCast();
+  plJoltShapeCapsuleComponent@ opCast();
+  plJoltShapeConvexHullComponent@ opCast();
+  plJoltShapeCylinderComponent@ opCast();
+  plJoltShapeSphereComponent@ opCast();
+}
+
+class plJoltShapeBoxComponent : plJoltShapeComponent
+{
+  plVec3 HalfExtents;
+}
+
+class plJoltShapeCapsuleComponent : plJoltShapeComponent
+{
+  float Height;
+  float Radius;
+}
+
+class plJoltShapeConvexHullComponent : plJoltShapeComponent
+{
+  plStringView CollisionMesh;
+}
+
+class plJoltShapeCylinderComponent : plJoltShapeComponent
+{
+  float Height;
+  float Radius;
+}
+
+class plJoltShapeSphereComponent : plJoltShapeComponent
+{
+  float Radius;
+}
+
+class plCommentComponent : plComponent
+{
+  plString Comment;
+}
+
+class plShapeIconComponent : plComponent
+{
+}
+
+class plMsgPhysicsAddImpulse : plMessage
+{
+  plVec3 GlobalPosition;
+  plVec3 Impulse;
+  uint32 ObjectFilterID;
+}
+
+class plMsgPhysicCharacterContact : plMessage
+{
+  plComponentHandle Character;
+  plVec3 GlobalPosition;
+  plVec3 Normal;
+  plVec3 CharacterVelocity;
+  float Impact;
+}
+
+class plMsgPhysicContact : plMessage
+{
+  plVec3 GlobalPosition;
+  plVec3 Normal;
+  float ImpactSqr;
+}
+
+class plEventMessage : plMessage
+{
+  plMsgPhysicsJointBroke@ opCast();
+  plMsgGenericEvent@ opCast();
+  plMsgAnimationReachedEnd@ opCast();
+  plMsgTriggerTriggered@ opCast();
+  plMsgSplineChanged@ opCast();
+  plMsgSensorDetectedObjectsChanged@ opCast();
+  plMsgBlackboardEntryChanged@ opCast();
+  plMsgInputActionTriggered@ opCast();
+  plMsgDamage@ opCast();
+  plMsgStateMachineStateChanged@ opCast();
+  plMsgAudioSystemRtpcValueChanged@ opCast();
+  plMsgAudioSystemSwitchStateChanged@ opCast();
+}
+
+class plMsgPhysicsJointBroke : plEventMessage
+{
+  plGameObjectHandle JointObject;
+}
+
+class plMsgObjectGrabbed : plMessage
+{
+  plGameObjectHandle GrabbedBy;
+  bool GotGrabbed;
+}
+
+class plMsgReleaseObjectGrab : plMessage
+{
+  plGameObjectHandle GrabbedObjectToRelease;
+}
+
+class plMsgOnlyApplyToObject : plMessage
+{
+  plGameObjectHandle Object;
+}
+
+class plMsgCollision : plMessage
+{
+}
+
+class plMsgDeleteGameObject : plMessage
+{
+}
+
+class plMsgComponentInternalTrigger : plMessage
+{
+  plHashedString Message;
+  int32 Payload;
+}
+
+class plMsgSetPlaying : plMessage
+{
+  bool Play;
+}
+
+class plMsgInterruptPlaying : plMessage
+{
+}
+
+class plMsgSetFloatParameter : plMessage
+{
+  plString Name;
+  float Value;
+}
+
+class plMsgGenericEvent : plEventMessage
+{
+  plHashedString Message;
+}
+
+class plMsgAnimationReachedEnd : plEventMessage
+{
+}
+
+class plMsgTriggerTriggered : plEventMessage
+{
+  plHashedString Message;
+  plTriggerState TriggerState;
+  plGameObjectHandle GameObject;
+}
+
+class plMsgEditorToolConfig : plMessage
+{
+}
+
+class plMsgSetColor : plMessage
+{
+  plColor Color;
+  plSetColorMode Mode;
+}
+
+class plMsgSetCustomData : plMessage
+{
+  float Data0;
+  float Data1;
+  float Data2;
+  float Data3;
+}
+
+class plMsgApplyRootMotion : plMessage
+{
+  plVec3 Translation;
+  plAngle RotationX;
+  plAngle RotationY;
+  plAngle RotationZ;
+}
+
+class plMsgSplineChanged : plEventMessage
+{
+  uint32 ChangeCounter;
+}
+
+class plMsgSetMeshMaterial : plMessage
+{
+  plStringView Material;
+  uint32 MaterialSlot;
+}
+
+class plMsgSensorDetectedObjectsChanged : plEventMessage
+{
+}
+
+class plMsgBlackboardEntryChanged : plEventMessage
+{
+  plString Name;
+}
+
+class plMsgInputActionTriggered : plEventMessage
+{
+  plString InputAction;
+  float KeyPressValue;
+  plTriggerState TriggerState;
+}
+
+class plMsgDamage : plEventMessage
+{
+  double Damage;
+  float Impulse;
+  plString HitObjectName;
+  plVec3 GlobalPosition;
+  plVec3 ImpactDirection;
+}
+
+class plMsgExport : plMessage
+{
+  plString DocumentType;
+  plString DocumentGuid;
+}
+
+class plMsgMoveCharacterController : plMessage
+{
+  double MoveForwards;
+  double MoveBackwards;
+  double StrafeLeft;
+  double StrafeRight;
+  double RotateLeft;
+  double RotateRight;
+  bool Run;
+  bool Jump;
+  bool Crouch;
+}
+
+class plMsgStateMachineStateChanged : plEventMessage
+{
+  plString OldStateName;
+  plString NewStateName;
+}
+
+class plMsgAudioSystemSetRtpcValue : plMessage
+{
+  float Value;
+  bool Sync;
+}
+
+class plMsgAudioSystemRtpcValueChanged : plEventMessage
+{
+  float Value;
+}
+
+class plMsgAudioSystemSetSwitchState : plMessage
+{
+  plString State;
+  bool Sync;
+}
+
+class plMsgAudioSystemSwitchStateChanged : plEventMessage
+{
+  plString State;
+}
+
+class plMsgAudioSystemSetEnvironmentAmount : plMessage
+{
+  float Value;
+  bool Sync;
+}
+
+class plMsgDeliverAngelScriptMsg : plMessage
+{
+}
+
+class plJoltMsgDisconnectConstraints : plMessage
+{
+}
+
+class plIAngelScriptClass
+{
+}
+
+
+// *** EXTRA *** 
+
+
+// Base class for objects that one shall be able to instantiate through the plScriptComponent.
+class plAngelScriptClass : plIAngelScriptClass
+{
+    plScriptComponent@ GetOwnerComponent();
+    plGameObject@ GetOwner();
+    plWorld@ GetWorld();
+    void SetUpdateInterval(plTime interval);
+
+    // Functions to override:
+    // void OnActivated();
+    // void OnDeactivated();
+    // void OnSimulationStarted();
+    // void Update();
+}
+    
+// *** GLOBAL FUNCTIONS *** 
+
+namespace plRTTI
+{
+  const plRTTI@ GetType(plStringView);
+}
+
+namespace plVec2
+{
+  plVec2 MakeNaN();
+  plVec2 MakeZero();
+}
+
+namespace plVec3
+{
+  plVec3 MakeNaN();
+  plVec3 MakeZero();
+  plVec3 MakeAxisX();
+  plVec3 MakeAxisY();
+  plVec3 MakeAxisZ();
+  plVec3 Make(float x, float y, float z);
+  plVec3 MakeRandomDirection(plRandom&inout rng);
+  plVec3 MakeRandomPointInSphere(plRandom&inout rng);
+  plVec3 MakeRandomDeviationX(plRandom&inout rng, const plAngle&in maxDeviation);
+  plVec3 MakeRandomDeviationY(plRandom&inout rng, const plAngle&in maxDeviation);
+  plVec3 MakeRandomDeviationZ(plRandom&inout rng, const plAngle&in maxDeviation);
+  plVec3 MakeRandomDeviation(plRandom&inout rng, const plAngle&in maxDeviation, const plVec3&in normal);
+}
+
+namespace plVec4
+{
+  plVec4 MakeNaN();
+  plVec4 MakeZero();
+}
+
+namespace plAngle
+{
+  float DegToRad(float fDegree);
+  float RadToDeg(float fRadians);
+  plAngle MakeZero();
+  plAngle MakeFromDegree(float fDegree);
+  plAngle MakeFromRadian(float fRadians);
+  plAngle AngleBetween(plAngle a1, plAngle a2);
+}
+
+namespace plQuat
+{
+  plQuat MakeIdentity();
+  plQuat MakeFromElements(float x, float y, float z, float w);
+  plQuat MakeFromAxisAndAngle(const plVec3&in vAxis, plAngle angle);
+  plQuat MakeShortestRotation(const plVec3&in vFrom, const plVec3&in vTo);
+  plQuat MakeFromMat3(const plMat3&in);
+  plQuat MakeSlerp(const plQuat&in qFrom, const plQuat&in qTo, float fFactor);
+  plQuat MakeFromEulerAngles(plAngle x, plAngle y, plAngle z);
+}
+
+namespace plTransform
+{
+  plTransform Make(const plVec3&in vPosition, const plQuat&in qRotation = plQuat::MakeIdentity(), const plVec3&in vScale = plVec3(1));
+  plTransform MakeIdentity();
+  plTransform MakeFromMat4(const plMat4&in);
+  plTransform MakeLocalTransform(const plTransform&in, const plTransform&in);
+  plTransform MakeGlobalTransform(const plTransform&in, const plTransform&in);
+}
+
+namespace plTime
+{
+  plTime Now();
+  plTime MakeFromNanoseconds(double fNanoSeconds);
+  plTime Nanoseconds(double fNanoSeconds);
+  plTime MakeFromMicroseconds(double fMicroSeconds);
+  plTime Microseconds(double fMicroSeconds);
+  plTime MakeFromMilliseconds(double fMilliSeconds);
+  plTime Milliseconds(double fMilliSeconds);
+  plTime MakeFromSeconds(double fSeconds);
+  plTime Seconds(double fSeconds);
+  plTime MakeFromMinutes(double fMinutes);
+  plTime Minutes(double fMinutes);
+  plTime MakeFromHours(double fHours);
+  plTime Hours(double fHours);
+  plTime MakeZero();
+}
+
+namespace plColor
+{
+  plColor MakeNaN();
+  plColor MakeZero();
+  plColor MakeRGBA(float r, float g, float b, float a);
+  plColor MakeFromKelvin(uint uiKelvin);
+  plColor MakeHSV(float fHue, float fSat, float fVal);
+}
+
+namespace plMath
+{
+  bool IsNaN(float value);
+  bool IsNaN(double value);
+  bool IsFinite(float value);
+  bool IsFinite(double value);
+  float Sin(plAngle a);
+  float Cos(plAngle a);
+  float Tan(plAngle a);
+  plAngle ASin(float f);
+  plAngle ACos(float f);
+  plAngle ATan(float f);
+  plAngle ATan2(float x, float y);
+  float Exp(float f);
+  float Ln(float f);
+  float Log2(float f);
+  uint Log2i(uint uiVal);
+  float Log10(float f);
+  float Log(float fBase, float f);
+  float Pow2(float f);
+  float Pow(float fBase, float fExp);
+  int Pow2(int i);
+  int Pow(int iBase, int iExp);
+  float Sqrt(float f);
+  double Sqrt(double f);
+  float Sign(float f);
+  int Sign(int f);
+  float Abs(float f);
+  int Abs(int f);
+  int Min(int f1, int f2);
+  float Min(float f1, float f2);
+  int Max(int f1, int f2);
+  float Max(float f1, float f2);
+  int Clamp(int val, int min, int max);
+  float Clamp(float val, float min, float max);
+  float Floor(float f);
+  float Ceil(float f);
+  int FloorToInt(float f);
+  int CeilToInt(float f);
+  float Lerp(float from, float to, float factor);
+  plVec2 Lerp(plVec2 from, plVec2 to, float factor);
+  plVec3 Lerp(plVec3 from, plVec3 to, float factor);
+  plVec4 Lerp(plVec4 from, plVec4 to, float factor);
+  plColor Lerp(plColor from, plColor to, float factor);
+  float Unlerp(float from, float to, float value);
+  bool IsEqual(float lhs, float rhs, float fEpsilon);
+  bool IsZero(float value, float fEpsilon);
+  bool IsInRange(float value, float min, float max);
+}
+
+namespace plSpatial
+{
+  void FindObjectsInSphere(plStringView sCategory, const plVec3&in vCenter, float fRadius, ReportObjectCB@ callback);
+}
+
+void throw(plStringView);
+namespace plClock
+{
+  plClock@ GetGlobalClock();
+}
+
+namespace plSound
+{
+  void PlaySound(plStringView Resource, plVec3 GlobalPosition, plQuat GlobalRotation = plQuat::MakeIdentity(), float Pitch = 1, float Volume = 1, bool BlockToLoad = false);
+}
+
+namespace plCVar
+{
+  bool GetValue_asBool(plStringView Name);
+  int GetValue_asInt32(plStringView Name);
+  float GetValue_asFloat(plStringView Name);
+  plTime GetValue_asTime(plStringView Name);
+  plAngle GetValue_asAngle(plStringView Name);
+  plVec2 GetValue_asVec2(plStringView Name);
+  plVec3 GetValue_asVec3(plStringView Name);
+  plVec4 GetValue_asVec4(plStringView Name);
+  plQuat GetValue_asQuat(plStringView Name);
+  plColor GetValue_asColor(plStringView Name);
+  plString GetValue_asString(plStringView Name);
+  plGameObjectHandle GetValue_asGameObjectHandle(plStringView Name);
+  plComponentHandle GetValue_asComponentHandle(plStringView Name);
+  bool GetBoolValue(plStringView Name);
+  int GetIntValue(plStringView Name);
+  float GetFloatValue(plStringView Name);
+  plString GetStringValue(plStringView Name);
+  void SetValue(plStringView Name, ?&in Value);
+  void SetBoolValue(plStringView Name, bool Value);
+  void SetIntValue(plStringView Name, int Value);
+  void SetFloatValue(plStringView Name, float Value);
+  void SetStringValue(plStringView Name, plString Value);
+}
+
+namespace plLog
+{
+  void Info(plStringView);
+  void Info(plStringView, ?&in VarArg1);
+  void Info(plStringView, ?&in VarArg1, ?&in VarArg2);
+  void Info(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3);
+  void Info(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4);
+  void Info(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5);
+  void Info(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6);
+  void Info(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6, ?&in VarArg7);
+  void Info(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6, ?&in VarArg7, ?&in VarArg8);
+  void Warning(plStringView);
+  void Warning(plStringView, ?&in VarArg1);
+  void Warning(plStringView, ?&in VarArg1, ?&in VarArg2);
+  void Warning(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3);
+  void Warning(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4);
+  void Warning(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5);
+  void Warning(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6);
+  void Warning(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6, ?&in VarArg7);
+  void Warning(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6, ?&in VarArg7, ?&in VarArg8);
+  void Error(plStringView);
+  void Error(plStringView, ?&in VarArg1);
+  void Error(plStringView, ?&in VarArg1, ?&in VarArg2);
+  void Error(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3);
+  void Error(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4);
+  void Error(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5);
+  void Error(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6);
+  void Error(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6, ?&in VarArg7);
+  void Error(plStringView, ?&in VarArg1, ?&in VarArg2, ?&in VarArg3, ?&in VarArg4, ?&in VarArg5, ?&in VarArg6, ?&in VarArg7, ?&in VarArg8);
+}
+
+namespace plPhysics
+{
+  plVec3 GetGravity();
+  uint8 GetCollisionLayerByName(plStringView Name);
+  uint8 GetWeightCategoryByName(plStringView Name);
+  uint8 GetImpulseTypeByName(plStringView Name);
+  bool Raycast(plVec3&out HitPosition, plVec3&out HitNormal, plGameObjectHandle&out HitObject, plVec3 Start, plVec3 Direction, uint8 CollisionLayer, plPhysicsShapeType ShapeTypes = plPhysicsShapeType(3), uint IgnoreObjectID = 18446744073709551615);
+  bool OverlapTestLine(plVec3 Start, plVec3 End, uint8 CollisionLayer, plPhysicsShapeType ShapeTypes = plPhysicsShapeType(3), uint IgnoreObjectID = 18446744073709551615);
+  bool OverlapTestSphere(float Radius, plVec3 Position, uint8 CollisionLayer, plPhysicsShapeType ShapeTypes = plPhysicsShapeType(3));
+  bool OverlapTestCapsule(float Radius, float Height, plTransform Transform, uint8 CollisionLayer, plPhysicsShapeType ShapeTypes = plPhysicsShapeType(3));
+  bool SweepTestSphere(plVec3&out HitPosition, plVec3&out HitNormal, plGameObjectHandle&out HitObject, float Radius, plVec3 Start, plVec3 Direction, float Distance, uint8 CollisionLayer, plPhysicsShapeType ShapeTypes = plPhysicsShapeType(3));
+  bool SweepTestCapsule(plVec3&out HitPosition, plVec3&out HitNormal, plGameObjectHandle&out HitObject, float Radius, float Height, plTransform Start, plVec3 Direction, float Distance, uint8 CollisionLayer, plPhysicsShapeType ShapeTypes = plPhysicsShapeType(3));
+  bool RaycastSurfaceInteraction(plVec3 RayStart, plVec3 RayDirection, uint8 CollisionLayer, plPhysicsShapeType ShapeTypes, plStringView FallbackSurface, plTempHashedString Interaction, float Impulse = 0, uint IgnoreObjectID = 18446744073709551615);
+}
+
+namespace plPrefabs
+{
+  void SpawnPrefab(plStringView Prefab, plTransform GlobalTransform, uint UniqueID = 4294967295, bool SetCreatedByPrefab = true, bool SetHideShapeIcon = true);
+  void SpawnPrefabAsChild(plStringView Prefab, plGameObject@ Parent, plTransform LocalTransform, uint UniqueID = 4294967295, bool SetCreatedByPrefab = true, bool SetHideShapeIcon = true);
+}
+
+namespace plDebug
+{
+  plVec2 GetResolution();
+  void DrawCross(plVec3 Position, float Size = 0.1, plColor Color = plColor(1, 1, 1, 1), plTransform Transform = plTransform::MakeIdentity());
+  void DrawLineBox(plVec3 Position, plVec3 HalfExtents = plVec3(1, 1, 1), plColor Color = plColor(1, 1, 1, 1), plTransform Transform = plTransform::MakeIdentity());
+  void DrawLineSphere(plVec3 Position, float Radius = 1, plColor Color = plColor(1, 1, 1, 1), plTransform Transform = plTransform::MakeIdentity());
+  void DrawSolidBox(plVec3 Position, plVec3 HalfExtents = plVec3(1, 1, 1), plColor Color = plColor(1, 1, 1, 1), plTransform Transform = plTransform::MakeIdentity());
+  void Draw2DText(plStringView Text, plVec3 Position, plColor Color, uint SizeInPixel = 16, plDebugTextHAlign HAlign = plDebugTextHAlign(0));
+  void Draw3DText(plStringView Text, plVec3 Position, plColor Color, uint SizeInPixel = 16);
+  void DrawInfoText(plStringView Text, plDebugTextPlacement Placement, plStringView Group, plColor Color);
+  void AddPersistentCross(plVec3 Position, float Size = 0.1, plColor Color = plColor(1, 1, 1, 1), plTransform Transform = plTransform::MakeIdentity(), plTime Duration = plTime::Seconds(1));
+  void AddPersistentLineBox(plVec3 Position, plVec3 HalfExtents = plVec3(1, 1, 1), plColor Color = plColor(1, 1, 1, 1), plTransform Transform = plTransform::MakeIdentity(), plTime Duration = plTime::Seconds(1));
+  void AddPersistentLineSphere(plVec3 Position, float Radius = 1, plColor Color = plColor(1, 1, 1, 1), plTransform Transform = plTransform::MakeIdentity(), plTime Duration = plTime::Seconds(1));
+  void DrawLine(plVec3 Start, plVec3 End, plColor StartColor, plColor EndColor);
+  void Draw2DLine(plVec3 Start, plVec3 End, plColor StartColor, plColor EndColor);
+}
+
+plGameObject@ GetScriptOwnerObject(plIAngelScriptClass@ self);
+plScriptComponent@ GetScriptOwnerComponent(plIAngelScriptClass@ self);
+plWorld@ GetScriptOwnerWorld(plIAngelScriptClass@ self);
+
+// *** GLOBAL PROPERTIES *** 
+
+namespace plColor
+{
+  plColor AliceBlue;
+  plColor AntiqueWhite;
+  plColor Aqua;
+  plColor Aquamarine;
+  plColor Azure;
+  plColor Beige;
+  plColor Bisque;
+  plColor Black;
+  plColor BlanchedAlmond;
+  plColor Blue;
+  plColor BlueViolet;
+  plColor Brown;
+  plColor BurlyWood;
+  plColor CadetBlue;
+  plColor Chartreuse;
+  plColor Chocolate;
+  plColor Coral;
+  plColor CornflowerBlue;
+  plColor Cornsilk;
+  plColor Crimson;
+  plColor Cyan;
+  plColor DarkBlue;
+  plColor DarkCyan;
+  plColor DarkGoldenRod;
+  plColor DarkGray;
+  plColor DarkGrey;
+  plColor DarkGreen;
+  plColor DarkKhaki;
+  plColor DarkMagenta;
+  plColor DarkOliveGreen;
+  plColor DarkOrange;
+  plColor DarkOrchid;
+  plColor DarkRed;
+  plColor DarkSalmon;
+  plColor DarkSeaGreen;
+  plColor DarkSlateBlue;
+  plColor DarkSlateGray;
+  plColor DarkSlateGrey;
+  plColor DarkTurquoise;
+  plColor DarkViolet;
+  plColor DeepPink;
+  plColor DeepSkyBlue;
+  plColor DimGray;
+  plColor DimGrey;
+  plColor DodgerBlue;
+  plColor FireBrick;
+  plColor FloralWhite;
+  plColor ForestGreen;
+  plColor Fuchsia;
+  plColor Gainsboro;
+  plColor GhostWhite;
+  plColor Gold;
+  plColor GoldenRod;
+  plColor Gray;
+  plColor Grey;
+  plColor Green;
+  plColor GreenYellow;
+  plColor HoneyDew;
+  plColor HotPink;
+  plColor IndianRed;
+  plColor Indigo;
+  plColor Ivory;
+  plColor Khaki;
+  plColor Lavender;
+  plColor LavenderBlush;
+  plColor LawnGreen;
+  plColor LemonChiffon;
+  plColor LightBlue;
+  plColor LightCoral;
+  plColor LightCyan;
+  plColor LightGoldenRodYellow;
+  plColor LightGray;
+  plColor LightGrey;
+  plColor LightGreen;
+  plColor LightPink;
+  plColor LightSalmon;
+  plColor LightSeaGreen;
+  plColor LightSkyBlue;
+  plColor LightSlateGray;
+  plColor LightSlateGrey;
+  plColor LightSteelBlue;
+  plColor LightYellow;
+  plColor Lime;
+  plColor LimeGreen;
+  plColor Linen;
+  plColor Magenta;
+  plColor Maroon;
+  plColor MediumAquaMarine;
+  plColor MediumBlue;
+  plColor MediumOrchid;
+  plColor MediumPurple;
+  plColor MediumSeaGreen;
+  plColor MediumSlateBlue;
+  plColor MediumSpringGreen;
+  plColor MediumTurquoise;
+  plColor MediumVioletRed;
+  plColor MidnightBlue;
+  plColor MintCream;
+  plColor MistyRose;
+  plColor Moccasin;
+  plColor NavajoWhite;
+  plColor Navy;
+  plColor OldLace;
+  plColor Olive;
+  plColor OliveDrab;
+  plColor Orange;
+  plColor OrangeRed;
+  plColor Orchid;
+  plColor PaleGoldenRod;
+  plColor PaleGreen;
+  plColor PaleTurquoise;
+  plColor PaleVioletRed;
+  plColor PapayaWhip;
+  plColor PeachPuff;
+  plColor Peru;
+  plColor Pink;
+  plColor Plum;
+  plColor PowderBlue;
+  plColor Purple;
+  plColor RebeccaPurple;
+  plColor Red;
+  plColor RosyBrown;
+  plColor RoyalBlue;
+  plColor SaddleBrown;
+  plColor Salmon;
+  plColor SandyBrown;
+  plColor SeaGreen;
+  plColor SeaShell;
+  plColor Sienna;
+  plColor Silver;
+  plColor SkyBlue;
+  plColor SlateBlue;
+  plColor SlateGray;
+  plColor SlateGrey;
+  plColor Snow;
+  plColor SpringGreen;
+  plColor SteelBlue;
+  plColor Tan;
+  plColor Teal;
+  plColor Thistle;
+  plColor Tomato;
+  plColor Turquoise;
+  plColor Violet;
+  plColor Wheat;
+  plColor White;
+  plColor WhiteSmoke;
+  plColor Yellow;
+  plColor YellowGreen;
+}
+

@@ -1,0 +1,1 @@
+#include "../AngelScript/source/add_on/scriptarray/scriptarray.cpp"
