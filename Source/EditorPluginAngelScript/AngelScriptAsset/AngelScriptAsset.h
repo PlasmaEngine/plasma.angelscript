@@ -55,13 +55,14 @@ public:
   void OpenExternalEditor();
   void SyncExposedParameters();
 
+  /// Sends the input file, code and class to the engine process.
+  void SyncInfos();
+
   static void PropertyMetaStateEventHandler(plPropertyMetaStateEvent& e);
 
 protected:
   virtual plTransformStatus InternalTransformAsset(const char* szTargetFile, plStringView sOutputTag, const plPlatformProfile* pAssetProfile, const plAssetFileHeader& AssetHeader, plBitflags<plTransformFlags> transformFlags) override;
   virtual plTransformStatus InternalTransformAsset(plStreamWriter& stream, plStringView sOutputTag, const plPlatformProfile* pAssetProfile, const plAssetFileHeader& AssetHeader, plBitflags<plTransformFlags> transformFlags) override;
-
-  void SyncInfos();
 
   virtual void UpdateAssetDocumentInfo(plAssetDocumentInfo* pInfo) const override;
 };

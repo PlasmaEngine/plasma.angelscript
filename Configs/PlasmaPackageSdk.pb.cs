@@ -56,6 +56,14 @@ public static class PlasmaPackageSdk
         return Path.Combine(Root, "Binaries", $"{context.Platform}_{context.Configuration}");
     }
 
+    /// \brief Whether the SDK's platform builds with an MSVC-style toolchain (import libraries) rather than a GCC-style
+    /// one (shared objects). Windows and the platforms built the same way leave import libraries next to their DLLs, so
+    /// the SDK's binaries answer it and new platforms need no list here.
+    public static bool UsesMsvcToolchain(BuildContext context)
+    {
+        return File.Exists(Path.Combine(SdkBinaryDirectory(context), "plFoundation.lib"));
+    }
+
     /// \brief Where this package's own binaries go.
     ///
     /// This layout is not arbitrary: it is what Package.sha256 records and what the publisher packs
@@ -82,8 +90,8 @@ public static class PlasmaPackageSdk
 
         rules.PublicDefinitions.Add("BUILDSYSTEM_COMPILE_ENGINE_AS_DLL");
         rules.PublicDefinitions.Add("BUILDSYSTEM_SDKVERSION_MAJOR=0");
-        rules.PublicDefinitions.Add("BUILDSYSTEM_SDKVERSION_MINOR=9");
-        rules.PublicDefinitions.Add("BUILDSYSTEM_SDKVERSION_PATCH=2");
+        rules.PublicDefinitions.Add("BUILDSYSTEM_SDKVERSION_MINOR=11");
+        rules.PublicDefinitions.Add("BUILDSYSTEM_SDKVERSION_PATCH=0");
         rules.PublicDefinitions.Add("UNICODE");
         rules.PublicDefinitions.Add("_UNICODE");
 
@@ -222,7 +230,7 @@ public static class PlasmaPackageSdk
             rules.PublicIncludePaths.Add(sourceParent.FullName);
         }
 
-        if (context.Platform == TargetPlatform.Windows)
+        if (UsesMsvcToolchain(context))
         {
             rules.PrivateLibraries.Add(Path.Combine(PackageBinaryDirectory(context), outputName + ".lib"));
         }
@@ -231,7 +239,7 @@ public static class PlasmaPackageSdk
     public static void AddImportLibrary(ModuleRules rules, BuildContext context, string outputName)
     {
         var library = Path.Combine(SdkBinaryDirectory(context),
-            outputName + (context.Platform == TargetPlatform.Windows ? ".lib" : ".so"));
+            outputName + (UsesMsvcToolchain(context) ? ".lib" : ".so"));
 
         if (File.Exists(library))
         {

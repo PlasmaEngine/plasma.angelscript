@@ -1,12 +1,63 @@
 #include <EditorPluginAssets/EditorPluginAssetsPCH.h>
 
 #include <EditorFramework/GUI/ExposedParameters.h>
+#include <EditorFramework/Scripting/ScriptFieldMapper.h>
+#include <Foundation/IO/FileSystem/FileReader.h>
 #include <EditorPluginAngelScript/AngelScriptAsset/AngelScriptAsset.h>
 #include <Foundation/CodeUtils/Preprocessor.h>
 #include <GuiFoundation/PropertyGrid/PropertyMetaState.h>
-#include <GuiFoundation/VisualGraph/Scene.moc.h>
+#include <GuiFoundation/UIServices/UIServices.h>
 #include <ToolsFoundation/Serialization/DocumentObjectConverter.h>
 #include <ToolsFoundation/VisualGraph/VisualGraphCommandAccessor.h>
+
+namespace
+{
+  /// Returns the `///` comment lines directly above the declaration of a class member, without the markers.
+  plString FindFieldComment(plStringView sCode, plStringView sName)
+  {
+    plHybridArray<plStringView, 256> lines;
+    sCode.Split(true, lines, "\n");
+
+    for (plUInt32 i = 0; i < lines.GetCount(); ++i)
+    {
+      plStringView line = lines[i];
+      line.Trim(" \t\r");
+      if (line.StartsWith("//"))
+        continue;
+
+      const char* pName = line.FindWholeWord(plStringBuilder(sName).GetData(), plStringUtils::IsIdentifierDelimiter_C_Code);
+      if (pName == nullptr || pName == line.GetStartPointer())
+        continue;
+
+      plStringView after(pName + sName.GetElementCount(), line.GetEndPointer());
+      after.Trim(" \t");
+      if (!after.StartsWith("=") && !after.StartsWith(";"))
+        continue;
+
+      plUInt32 uiFirst = i;
+      while (uiFirst > 0)
+      {
+        plStringView above = lines[uiFirst - 1];
+        above.Trim(" \t\r");
+        if (!above.StartsWith("///"))
+          break;
+        --uiFirst;
+      }
+
+      plStringBuilder comment;
+      for (plUInt32 c = uiFirst; c < i; ++c)
+      {
+        plStringView text = lines[c];
+        text.Trim(" \t\r");
+        text.Shrink(3, 0);
+        comment.Append(text, "\n");
+      }
+      return comment;
+    }
+
+    return {};
+  }
+} // namespace
 
 // clang-format off
 PL_BEGIN_STATIC_REFLECTED_ENUM(plAngelScriptCodeMode, 1)
@@ -115,7 +166,7 @@ plTransformStatus plAngelScriptAssetDocument::InternalTransformAsset(const char*
     preProc.m_sRefFilePath = GetDocumentPath();
     preProc.m_sMainCode = pProps->m_sCode;
 
-    plQtEditorApp::GetSingleton()->MakePathDataDirectoryRelative(preProc.m_sRefFilePath);
+    plEditorApp::GetSingleton()->MakePathDataDirectoryRelative(preProc.m_sRefFilePath);
   }
   else
   {
@@ -181,7 +232,7 @@ void plAngelScriptAssetDocument::SyncInfos()
   {
     {
       plStringBuilder sStartFile = GetDocumentPath();
-      plQtEditorApp::GetSingleton()->MakePathDataDirectoryRelative(sStartFile);
+      plEditorApp::GetSingleton()->MakePathDataDirectoryRelative(sStartFile);
       sStartFile.Prepend(":inline:");
 
       plDocumentConfigMsgToEngine cfg;
@@ -212,23 +263,38 @@ void plAngelScriptAssetDocument::UpdateAssetDocumentInfo(plAssetDocumentInfo* pI
 
   plExposedParameters* pExposedParams = PL_DEFAULT_NEW(plExposedParameters);
 
+  // Field comments carry the editor metadata (tooltip, @range, @group, @asset, ...).
+  plStringBuilder sCode;
+  if (GetProperties()->m_CodeMode == plAngelScriptCodeMode::Inline)
+  {
+    sCode = GetProperties()->m_sCode;
+  }
+  else
+  {
+    plFileReader file;
+    if (file.Open(GetProperties()->m_sScriptFile).Succeeded())
+      sCode.ReadAll(file);
+  }
+
   for (const auto& p : GetProperties()->m_Parameters)
   {
     if (p.m_bExpose == false || p.m_sName.IsEmpty() || !p.m_DefaultValue.IsValid())
       continue;
 
-    plExposedParameter* param = PL_DEFAULT_NEW(plExposedParameter);
-    param->m_sName = p.m_sName;
-    param->m_DefaultValue = p.m_DefaultValue;
+    plScriptFieldDesc field;
+    field.m_sName = p.m_sName;
+    field.m_DefaultValue = p.m_DefaultValue;
 
-    // TODO AngelScript: support resource handles and pass through the necessary attributes
-    //
-    // if (p.m_DefaultValue.IsA<plString>())
-    //{
-    //   param->m_Attributes.PushBack(new plAssetBrowserAttribute("CompatibleAsset_Material"));
-    // }
+    // A handle field is picked as an object in the scene; the component resolves it back to a handle.
+    if (p.m_DefaultValue.IsA<plGameObjectHandle>())
+    {
+      field.m_DefaultValue = plString();
+      field.m_bObjectReference = true;
+    }
 
-    pExposedParams->m_Parameters.PushBack(param);
+    plScriptFieldMapper::ParseCommentTags(FindFieldComment(sCode, p.m_sName), field);
+
+    pExposedParams->m_Parameters.PushBack(plScriptFieldMapper::CreateParameter(field));
   }
 
   for (const auto& p : GetProperties()->m_Dependencies)
@@ -261,16 +327,12 @@ void plAngelScriptAssetDocument::OpenExternalEditor()
     return;
 
   {
-    QStringList args;
+    const plString args[] = {plToolsProject::GetSingleton()->GetProjectDirectory(), sScriptFileAbs};
 
-    args.append(plMakeQString(plToolsProject::GetSingleton()->GetProjectDirectory()));
-
-    args.append(sScriptFileAbs.GetData());
-
-    if (plQtUiServices::OpenInVsCode(args).Failed())
+    if (plEditorUiServices::OpenInVsCode(args).Failed())
     {
       // try again with a different program
-      plQtUiServices::OpenFileInDefaultProgram(sScriptFileAbs);
+      plEditorUiServices::OpenFileInDefaultProgram(sScriptFileAbs.GetData());
     }
   }
 }

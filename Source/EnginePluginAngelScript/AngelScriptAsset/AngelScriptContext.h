@@ -19,6 +19,7 @@ protected:
   void DestroyViewContext(plEngineProcessViewContext* pContext) override;
 
   void SyncExposedParameters();
+  void CheckCode();
   asIScriptModule* CompileModule(plStringBuilder& out_sCode, plSet<plString>* out_pDependencies);
   void RetrieveScriptInfos(plStringView sBasePath);
 

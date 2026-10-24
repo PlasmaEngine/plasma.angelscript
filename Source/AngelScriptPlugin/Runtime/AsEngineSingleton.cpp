@@ -3,6 +3,7 @@
 #include <AngelScript/include/angelscript.h>
 #include <AngelScript/source/add_on/scriptarray/scriptarray.h>
 #include <AngelScript/source/add_on/scriptdictionary/scriptdictionary.h>
+#include <AngelScriptPlugin/Runtime/AsDebugBackend.h>
 #include <AngelScriptPlugin/Runtime/AsEngineSingleton.h>
 #include <AngelScriptPlugin/Runtime/AsInstance.h>
 #include <AngelScriptPlugin/Runtime/AsStringFactory.h>
@@ -30,6 +31,10 @@ END_SUBSYSTEM_DEPENDENCIES
 
 ON_CORESYSTEMS_SHUTDOWN
 {
+  // Created on demand by a headless tool, which never runs the high-level shutdown.
+  if (plAngelScriptEngineSingleton* pEngine = plAngelScriptEngineSingleton::GetSingleton())
+    PL_DEFAULT_DELETE(pEngine);
+
   if (g_pAsAllocator)
   {
     plThread::s_ThreadEvents.RemoveEventHandler(OnThreadEvent);
@@ -39,9 +44,7 @@ ON_CORESYSTEMS_SHUTDOWN
 
 ON_HIGHLEVELSYSTEMS_STARTUP
 {
-  g_pAsAllocator = PL_DEFAULT_NEW(plAsAllocatorType, "AngelScript", plFoundation::GetDefaultAllocator());
-  plThread::s_ThreadEvents.AddEventHandler(OnThreadEvent);
-  PL_DEFAULT_NEW(plAngelScriptEngineSingleton);
+  plAngelScriptEngineSingleton::GetOrCreate();
 }
 
 ON_HIGHLEVELSYSTEMS_SHUTDOWN
@@ -82,6 +85,20 @@ static void OnThreadEvent(const plThreadEvent& e)
   }
 }
 
+plAngelScriptEngineSingleton* plAngelScriptEngineSingleton::GetOrCreate()
+{
+  if (plAngelScriptEngineSingleton* pEngine = GetSingleton())
+    return pEngine;
+
+  if (g_pAsAllocator == nullptr)
+  {
+    g_pAsAllocator = PL_DEFAULT_NEW(plAsAllocatorType, "AngelScript", plFoundation::GetDefaultAllocator());
+    plThread::s_ThreadEvents.AddEventHandler(OnThreadEvent);
+  }
+
+  return PL_DEFAULT_NEW(plAngelScriptEngineSingleton);
+}
+
 plAngelScriptEngineSingleton::plAngelScriptEngineSingleton()
   : m_SingletonRegistrar(this)
 {
@@ -117,10 +134,16 @@ plAngelScriptEngineSingleton::plAngelScriptEngineSingleton()
 
   AddForbiddenType("plStringView");
   AddForbiddenType("plStringBuilder");
+
+  m_pDebugBackend = PL_DEFAULT_NEW(plAngelScriptDebugBackend);
+  plScriptDebugger::RegisterBackend(m_pDebugBackend.Borrow());
 }
 
 plAngelScriptEngineSingleton::~plAngelScriptEngineSingleton()
 {
+  plScriptDebugger::UnregisterBackend(m_pDebugBackend.Borrow());
+  m_pDebugBackend.Clear();
+
   m_pEngine->ShutDownAndRelease();
 
   if (m_pStringFactory)

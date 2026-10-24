@@ -2,7 +2,7 @@
 
 #include <EditorPluginAngelScript/AngelScriptAsset/AngelScriptAsset.h>
 #include <EditorPluginAngelScript/AngelScriptAsset/AngelScriptAssetManager.h>
-#include <EditorPluginAngelScript/AngelScriptWindow/AngelScriptWindow.moc.h>
+#include <EditorPluginAngelScript/AngelScriptWindow/AngelScriptWindow.h>
 
 PL_BEGIN_DYNAMIC_REFLECTED_TYPE(plAngelScriptAssetManager, 1, plRTTIDefaultAllocator<plAngelScriptAssetManager>)
 PL_END_DYNAMIC_REFLECTED_TYPE;
@@ -21,8 +21,6 @@ plAngelScriptAssetManager::plAngelScriptAssetManager()
 
   m_DocTypeDesc.m_sResourceFileExtension = "plBinAngelScript";
   m_DocTypeDesc.m_AssetDocumentFlags = plAssetDocumentFlags::AutoTransformOnSave;
-
-  plQtImageCache::GetSingleton()->RegisterTypeImage("AngelScript", QPixmap(":/AssetIcons/AngelScript-Big-AS.svg"));
 }
 
 plAngelScriptAssetManager::~plAngelScriptAssetManager()
@@ -38,7 +36,7 @@ void plAngelScriptAssetManager::OnDocumentManagerEvent(const plDocumentManager::
     {
       if (e.m_pDocument->GetDynamicRTTI() == plGetStaticRTTI<plAngelScriptAssetDocument>())
       {
-        new plQtAngelScriptAssetDocumentWindow((plAngelScriptAssetDocument*)e.m_pDocument); // NOLINT: Not a memory leak
+        new plAngelScriptAssetDocumentWindow((plAngelScriptAssetDocument*)e.m_pDocument); // NOLINT: Not a memory leak
       }
     }
     break;

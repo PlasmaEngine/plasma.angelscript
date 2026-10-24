@@ -19,7 +19,8 @@ public class EditorPluginAngelScriptModule : ModuleRules
 
         PublicDependencies.Add("AngelScriptModule");
 
-        PlasmaPackageQt.ConfigureQtModule(this, context, "EditorPluginAngelScriptModule",
-            "Source/EditorPluginAngelScript", "Core", "Gui", "Widgets");
+        // The script view is an engine-rendered code area.
+        PlasmaPackageSdk.AddImportLibrary(this, context, "plEditorUi");
+        PlasmaPackageSdk.AddImportLibrary(this, context, "plGameUiPlugin");
     }
 }

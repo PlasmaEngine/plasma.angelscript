@@ -19,13 +19,12 @@ public class AngelScriptModule : ModuleRules
 
         PrivateDefinitions.Add("ANGELSCRIPT_EXPORT");
 
-        ConfigureForPlatform(TargetPlatform.Windows, () =>
+        // The native x64 call bridge is MASM, which every x64 MSVC toolchain assembles (Windows and the platforms built
+        // the same way).
+        if (PlasmaBuildAngelScript.UsesNativeCallBridge(context))
         {
-            if (Context.Architecture != TargetArchitecture.X86 && Context.Architecture != TargetArchitecture.ARM64)
-            {
-                AdditionalLinkerFlags.Add($"\"{PlasmaBuildAngelScript.GetNativeCallObjectPath(context)}\"");
-            }
-        });
+            AdditionalLinkerFlags.Add($"\"{PlasmaBuildAngelScript.GetNativeCallObjectPath(context)}\"");
+        }
 
         CppStandard = CppStandard.Cpp20;
         UseUnityBuild = false;
@@ -42,9 +41,15 @@ public static class PlasmaBuildAngelScript
         return Path.Combine(context.ProjectRoot, "Intermediate", $"{context.Platform}_{context.Configuration}", "AngelScriptModule", "as_callfunc_x64_msvc_asm.obj");
     }
 
+    /// \brief Whether the build links the MASM x64 call bridge (as_callfunc_x64_msvc_asm.asm).
+    public static bool UsesNativeCallBridge(BuildContext context)
+    {
+        return PlasmaPackageSdk.UsesMsvcToolchain(context) && context.Architecture != TargetArchitecture.X86 && context.Architecture != TargetArchitecture.ARM64;
+    }
+
     public static void AddNativeCallAssemblerStep(TargetRules rules, BuildContext context)
     {
-        if (context.Platform != TargetPlatform.Windows || context.Architecture == TargetArchitecture.X86 || context.Architecture == TargetArchitecture.ARM64)
+        if (!UsesNativeCallBridge(context))
         {
             return;
         }

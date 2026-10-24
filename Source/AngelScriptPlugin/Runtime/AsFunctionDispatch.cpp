@@ -4,6 +4,7 @@
 #include <AngelScriptPlugin/Runtime/AsFunctionDispatch.h>
 #include <AngelScriptPlugin/Runtime/AsInstance.h>
 #include <AngelScriptPlugin/Utils/AngelScriptUtils.h>
+#include <Core/Scripting/ScriptCallScope.h>
 #include <Core/Scripting/ScriptComponent.h>
 #include <Core/Scripting/ScriptWorldModule.h>
 
@@ -96,6 +97,8 @@ void plAngelScriptMessageHandler::Dispatch(plAbstractMessageHandler* pSelf, void
   auto pScriptInstance = static_cast<plAngelScriptInstance*>(pScriptComp->GetScriptInstance());
   auto pContext = pScriptInstance->GetContext();
 
+  plScriptCallScope scope(pScriptInstance, pScriptComp->GetScriptType(), pThis->m_pAsFunction->GetName());
+
   bool bPush = false;
   if (pContext->GetState() == asEContextState::asEXECUTION_ACTIVE)
   {
@@ -164,6 +167,8 @@ void plAngelScriptCustomAsMessageHandler::Dispatch(plAbstractMessageHandler* pSe
     PL_ASSERT_DEBUG(pScriptInstance->GetObject(), "Invalid script object");
 
     auto pContext = pScriptInstance->GetContext();
+
+    plScriptCallScope scope(pScriptInstance, pScriptComp->GetScriptType(), r.m_pAsFunction->GetName());
 
     bool bPush = false;
     if (pContext->GetState() == asEContextState::asEXECUTION_ACTIVE)

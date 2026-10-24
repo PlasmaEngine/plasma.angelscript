@@ -2,6 +2,10 @@
 
 #include <AngelScriptPlugin/AngelScriptPluginDLL.h>
 #include <Core/Scripting/Bindings/ScriptBindingRegistry.h>
+#include <Core/Scripting/ScriptDiagnostic.h>
+#include <Foundation/Containers/HashTable.h>
+#include <Foundation/Containers/Map.h>
+#include <Foundation/Containers/Set.h>
 #include <Foundation/Configuration/Singleton.h>
 #include <Foundation/Memory/CommonAllocators.h>
 #include <Foundation/Reflection/Reflection.h>
@@ -12,6 +16,7 @@ class asIScriptModule;
 class asIStringFactory;
 struct asSMessageInfo;
 class plAsStringFactory;
+class plAngelScriptInstance;
 
 #if PL_ENABLED(PL_COMPILE_FOR_DEVELOPMENT)
 using plAsAllocatorType = plAllocatorWithPolicy<plAllocPolicyHeap, plAllocatorTrackingMode::AllocationStats>;
@@ -31,6 +36,10 @@ public:
   plAngelScriptEngineSingleton();
   ~plAngelScriptEngineSingleton();
 
+  /// The engine starts with the high-level systems. A headless tool (EditorProcessor) never starts those, so it
+  /// creates the engine here instead; core shutdown deletes it again.
+  static plAngelScriptEngineSingleton* GetOrCreate();
+
   asIScriptEngine* GetEngine() const { return m_pEngine; }
 
   asIScriptModule* SetModuleCode(plStringView sModuleName, plStringView sCode, bool bAddExternalSection);
@@ -38,6 +47,50 @@ public:
   plResult ValidateModule(asIScriptModule* pModule) const;
 
   const plSet<plString>& GetNotRegistered() const { return m_NotRegistered; }
+
+  /// \name Diagnostics
+  ///@{
+
+  /// \brief While set on a thread, compiler and pre-processor messages of that thread are also collected here.
+  static void SetDiagnosticCollector(plDynamicArray<plScriptDiagnostic>* pCollector);
+  static plDynamicArray<plScriptDiagnostic>* GetDiagnosticCollector();
+
+  /// \brief Remembers the pre-processed code of a module, so rows of its "Main" section map back to the original files.
+  void RegisterSourceMap(const asIScriptModule* pModule, plStringView sProcessedCode);
+  void UnregisterSourceMap(const asIScriptModule* pModule);
+
+  /// \brief Maps a row of a module's "Main" section to the original file and line. Fails for unknown modules.
+  plResult MapLocation(const asIScriptModule* pModule, plInt32 iRow, plStringView& out_sFile, plInt32& out_iLine) const;
+
+  /// \brief Remembers the field renames of a module's source: `/// @was OldName` above a field declaration.
+  void RegisterFormerNames(const asIScriptModule* pModule, plStringView sCode);
+
+  /// \brief The current name of a field that was renamed from sOldName, or empty.
+  plStringView FindRenamedField(const asIScriptModule* pModule, plStringView sOldName) const;
+
+  ///@}
+
+  /// \name Instances, for the debugger
+  ///@{
+  void AddInstance(plAngelScriptInstance* pInstance);
+  void RemoveInstance(plAngelScriptInstance* pInstance);
+  const plSet<plAngelScriptInstance*>& GetInstances() const { return m_Instances; }
+  ///@}
+
+private:
+  struct SourceMap
+  {
+    plString m_sCode;
+    plDynamicArray<plString> m_Files;  ///< distinct original files
+    plDynamicArray<plUInt16> m_RowFile; ///< per row of the code, index into m_Files
+    plDynamicArray<plInt32> m_RowLine;  ///< per row of the code, the line in that file
+    plHashTable<plString, plString> m_Renames; ///< a field's former name to its current one
+  };
+
+  plMap<const asIScriptModule*, plUniquePtr<SourceMap>> m_SourceMaps;
+  mutable plMutex m_SourceMapMutex;
+  plSet<plAngelScriptInstance*> m_Instances;
+  plUniquePtr<class plAngelScriptDebugBackend> m_pDebugBackend;
 
 private:
   void AddForbiddenType(const char* szTypeName);

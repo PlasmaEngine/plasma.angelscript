@@ -15,7 +15,8 @@ AngelScript.plPluginBundle  legacy descriptor, kept until the engine reads manif
 Source/
   AngelScriptPlugin/        runtime               -> plAngelScriptPlugin
   EnginePluginAngelScript/  editor engine process -> plEnginePluginAngelScript
-  EditorPluginAngelScript/  editor                -> plEditorPluginAngelScript  (Qt: script asset, editor window)
+  EditorPluginAngelScript/  editor                -> plEditorPluginAngelScript  (script asset, editor window)
+EditorIcons/                editor icons, registered as an icon folder by the editor plugin
 ThirdParty/
   AngelScript/              the upstream library, compiled into plAngelScriptPlugin
   AngelScript_plasmabuild/  the unity source list PlasmaBuild compiles

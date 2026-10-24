@@ -4,6 +4,8 @@
 #include <AngelScriptPlugin/Runtime/AsEngineSingleton.h>
 #include <AngelScriptPlugin/Runtime/AsInstance.h>
 #include <AngelScriptPlugin/Utils/AngelScriptUtils.h>
+#include <Core/Scripting/ScriptDiagnostic.h>
+#include <Foundation/Utilities/ConversionUtils.h>
 #include <EnginePluginAngelScript/AngelScriptAsset/AngelScriptContext.h>
 #include <Foundation/IO/CompressedStreamZstd.h>
 #include <Foundation/IO/FileSystem/DeferredFileWriter.h>
@@ -38,12 +40,32 @@ plStatus plAngelScriptDocumentContext::ExportDocument(const plExportDocumentMsgT
 
   plLogSystemScope logScope(&logBuffer);
 
+  plHybridArray<plScriptDiagnostic, 8> diagnostics;
+  plAngelScriptEngineSingleton::SetDiagnosticCollector(&diagnostics);
+
   plStringBuilder sCode;
   asIScriptModule* pModule = CompileModule(sCode, nullptr);
 
+  plAngelScriptEngineSingleton::SetDiagnosticCollector(nullptr);
+
+  // Errors without a place (no class, a missing file) still belong to the asset.
+  if (pModule == nullptr && diagnostics.IsEmpty())
+  {
+    plScriptDiagnostic& diag = diagnostics.ExpandAndGetRef();
+    diag.m_sLanguage = "AngelScript";
+    plStringBuilder sMessage = logBuffer.m_sBuffer.IsEmpty() ? plStringView("The script did not compile.") : logBuffer.m_sBuffer.GetView();
+    sMessage.Trim("\r\n ");
+    diag.m_sMessage = sMessage;
+  }
+
+  plStringBuilder sStatus = logBuffer.m_sBuffer;
+  plStringBuilder sAsset;
+  plConversionUtils::ToString(GetDocumentGuid(), sAsset);
+  plScriptDiagnostics::AppendAssetResult(sStatus, sAsset, "AngelScript", diagnostics);
+
   if (pModule == nullptr)
   {
-    return plStatus(logBuffer.m_sBuffer.GetView());
+    return plStatus(sStatus.GetView());
   }
 
   plHybridArray<plUInt8, 1024 * 8> bytecode;
@@ -80,7 +102,8 @@ plStatus plAngelScriptDocumentContext::ExportDocument(const plExportDocumentMsgT
   stream.WriteArray(bytecode).AssertSuccess();
   stream << sCode;
 
-  return plStatus(PL_SUCCESS);
+  // Warnings travel with the success, and an empty set clears the asset's old problems.
+  return plStatus(PL_SUCCESS, sStatus);
 }
 
 void plAngelScriptDocumentContext::HandleMessage(const plEditorEngineDocumentMsg* pMsg)
@@ -107,6 +130,10 @@ void plAngelScriptDocumentContext::HandleMessage(const plEditorEngineDocumentMsg
     {
       RetrieveScriptInfos(pMsg2->m_sValue);
     }
+    else if (pMsg2->m_sWhatToDo == "Check")
+    {
+      CheckCode();
+    }
   }
 
   plEngineProcessDocumentContext::HandleMessage(pMsg);
@@ -130,6 +157,44 @@ public:
   {
   }
 };
+
+void plAngelScriptDocumentContext::CheckCode()
+{
+  // Compiles the current text in a scratch module; nothing that runs is touched. The result goes back as diagnostic lines.
+  plLogSystemNull logNull;
+  plLogSystemScope scope(&logNull);
+
+  plHybridArray<plScriptDiagnostic, 8> diagnostics;
+  plAngelScriptEngineSingleton::SetDiagnosticCollector(&diagnostics);
+
+  plStringBuilder sCode;
+  asIScriptModule* pModule = CompileModule(sCode, nullptr);
+
+  plAngelScriptEngineSingleton::SetDiagnosticCollector(nullptr);
+
+  if (pModule != nullptr)
+  {
+    pModule->Discard();
+  }
+  else if (diagnostics.IsEmpty())
+  {
+    plScriptDiagnostic& diag = diagnostics.ExpandAndGetRef();
+    diag.m_sLanguage = "AngelScript";
+    diag.m_sMessage = "The script does not compile.";
+  }
+
+  plStringBuilder sAsset;
+  plConversionUtils::ToString(GetDocumentGuid(), sAsset);
+
+  plStringBuilder sPayload;
+  plScriptDiagnostics::AppendAssetResult(sPayload, sAsset, "AngelScript", diagnostics);
+
+  plSimpleDocumentConfigMsgToEditor msg;
+  msg.m_DocumentGuid = m_DocumentGuid;
+  msg.m_sWhatToDo = "CheckResult";
+  msg.m_sPayload = sPayload;
+  SendProcessMessage(&msg);
+}
 
 void plAngelScriptDocumentContext::SyncExposedParameters()
 {

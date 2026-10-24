@@ -56,6 +56,25 @@ private:
 
   void PreProc_Event(const plPreprocessor::ProcessingEvent& event)
   {
+    if (plDynamicArray<plScriptDiagnostic>* pCollector = plAngelScriptEngineSingleton::GetDiagnosticCollector())
+    {
+      if (event.m_Type == plPreprocessor::ProcessingEvent::Error || event.m_Type == plPreprocessor::ProcessingEvent::Warning)
+      {
+        plScriptDiagnostic& diag = pCollector->ExpandAndGetRef();
+        diag.m_sLanguage = "AngelScript";
+        diag.m_Severity = event.m_Type == plPreprocessor::ProcessingEvent::Error ? plScriptDiagnosticSeverity::Error : plScriptDiagnosticSeverity::Warning;
+        diag.m_Origin = plScriptDiagnosticOrigin::Compile;
+        diag.m_sCode = "Preprocessor";
+        diag.m_sMessage = event.m_sInfo;
+        if (event.m_pToken != nullptr)
+        {
+          diag.m_sFile = event.m_pToken->m_File.GetString();
+          diag.m_uiLine = event.m_pToken->m_uiLine;
+          diag.m_uiColumn = event.m_pToken->m_uiColumn;
+        }
+      }
+    }
+
     switch (event.m_Type)
     {
       case plPreprocessor::ProcessingEvent::Error:
@@ -112,6 +131,18 @@ void plAngelScriptEngineSingleton::CompilerMessageCallback(const asSMessageInfo*
   plStringView sSection = msg->section;
 
   FindCorrectSectionAndLine(lines, iLine, sSection);
+
+  if (plDynamicArray<plScriptDiagnostic>* pCollector = GetDiagnosticCollector())
+  {
+    plScriptDiagnostic& diag = pCollector->ExpandAndGetRef();
+    diag.m_sLanguage = "AngelScript";
+    diag.m_Severity = msg->type == asMSGTYPE_ERROR ? plScriptDiagnosticSeverity::Error : msg->type == asMSGTYPE_WARNING ? plScriptDiagnosticSeverity::Warning : plScriptDiagnosticSeverity::Info;
+    diag.m_Origin = plScriptDiagnosticOrigin::Compile;
+    diag.m_sFile = sSection;
+    diag.m_uiLine = iLine > 0 ? static_cast<plUInt32>(iLine) : 0;
+    diag.m_uiColumn = msg->col > 0 ? static_cast<plUInt32>(msg->col) : 0;
+    diag.m_sMessage = msg->message;
+  }
 
   switch (msg->type)
   {

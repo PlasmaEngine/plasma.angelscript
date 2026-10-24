@@ -13,6 +13,7 @@
 #include <Foundation/IO/ChunkStream.h>
 #include <Foundation/IO/CompressedStreamZstd.h>
 #include <Foundation/IO/StringDeduplicationContext.h>
+#include <Foundation/Types/ScopeExit.h>
 #include <Foundation/Utilities/AssetFileHeader.h>
 
 // clang-format off
@@ -29,6 +30,8 @@ PL_BEGIN_SUBSYSTEM_DECLARATION(AngelScript, AngelScriptResource)
   ON_CORESYSTEMS_STARTUP 
   {
     plResourceManager::RegisterResourceForAssetType("AngelScriptClass", plGetStaticRTTI<plAngelScriptResource>());
+    // The editor's document type; its reload requests after a transform use this name.
+    plResourceManager::RegisterResourceForAssetType("AngelScript", plGetStaticRTTI<plAngelScriptResource>());
     plResourceManager::RegisterResourceOverrideType(plGetStaticRTTI<plAngelScriptResource>(), [](const plStringBuilder& sResourceID) -> bool  {
         return sResourceID.HasExtension(".plBinAngelScript");
       });
@@ -115,7 +118,7 @@ plResourceLoadDesc plAngelScriptResource::UpdateContent(plStreamReader* pStream)
 #else
       plLog::Error("AngelScript is compressed with zstandard, but support for this compressor is not compiled in.");
       ld.m_State = plResourceState::LoadedResourceMissing;
-      return res;
+      return ld;
 #endif
 
     default:
@@ -132,10 +135,17 @@ plResourceLoadDesc plAngelScriptResource::UpdateContent(plStreamReader* pStream)
 
   auto pAs = plAngelScriptEngineSingleton::GetSingleton();
 
+  // Problems while loading (a script that compiled in the editor but not here) are reported like runtime problems.
+  plHybridArray<plScriptDiagnostic, 4> loadDiagnostics;
+  plAngelScriptEngineSingleton::SetDiagnosticCollector(&loadDiagnostics);
+  PL_SCOPE_EXIT(plAngelScriptEngineSingleton::SetDiagnosticCollector(nullptr));
+
+  plStringBuilder sProcessedCode;
+
   if (uiVersion == 1)
   {
     stream >> m_sScriptContent;
-    m_pModule = pAs->CompileModule(sModuleID, m_sClassName, "main", m_sScriptContent, nullptr, nullptr);
+    m_pModule = pAs->CompileModule(sModuleID, m_sClassName, "main", m_sScriptContent, &sProcessedCode, nullptr);
   }
   else
   {
@@ -145,7 +155,7 @@ plResourceLoadDesc plAngelScriptResource::UpdateContent(plStreamReader* pStream)
     if (uiVersion >= 3)
     {
       stream >> m_sScriptContent;
-      m_pModule = pAs->CompileModule(sModuleID, m_sClassName, "main", m_sScriptContent, nullptr, nullptr);
+      m_pModule = pAs->CompileModule(sModuleID, m_sClassName, "main", m_sScriptContent, &sProcessedCode, nullptr);
     }
     else
     {
@@ -155,8 +165,22 @@ plResourceLoadDesc plAngelScriptResource::UpdateContent(plStreamReader* pStream)
 
   if (m_pModule == nullptr)
   {
+    for (plScriptDiagnostic& diag : loadDiagnostics)
+    {
+      diag.m_Origin = plScriptDiagnosticOrigin::Reload;
+      diag.m_sAsset = GetResourceID();
+      plScriptDiagnostics::Report(diag);
+    }
     return ld;
   }
+
+  if (!sProcessedCode.IsEmpty())
+  {
+    pAs->RegisterSourceMap(m_pModule, sProcessedCode);
+  }
+
+  // values saved under a field's old name still reach it (`/// @was OldName`)
+  pAs->RegisterFormerNames(m_pModule, m_sScriptContent);
 
   const asITypeInfo* pClassType = m_pModule->GetTypeInfoByDecl(m_sClassName);
 
@@ -203,6 +227,8 @@ plResourceLoadDesc plAngelScriptResource::UpdateContent(plStreamReader* pStream)
   }
 
   CreateScriptType(GetResourceID(), pBaseType, std::move(functions), std::move(messageHandlers));
+
+  SetReloadInfo("AngelScript", "A-RECOMPILE", "AngelScript compiled a new module. Instances are re-created; members that still exist keep their values.");
 
   ld.m_State = plResourceState::Loaded;
   return ld;
