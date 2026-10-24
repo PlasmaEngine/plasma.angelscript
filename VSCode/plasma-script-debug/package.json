@@ -1,0 +1,42 @@
+{
+  "name": "plasma-script-debug",
+  "displayName": "Plasma Script Debugger",
+  "description": "Debug AngelScript in a running Plasma editor: breakpoints, stepping, call stack and variables.",
+  "publisher": "plasma",
+  "version": "1.0.0",
+  "engines": { "vscode": "^1.80.0" },
+  "categories": ["Debuggers"],
+  "activationEvents": ["onDebug", "onDebugResolve:plasma"],
+  "main": "./extension.js",
+  "contributes": {
+    "breakpoints": [{ "language": "angelscript" }],
+    "debuggers": [
+      {
+        "type": "plasma",
+        "label": "Plasma Editor",
+        "languages": ["angelscript"],
+        "configurationAttributes": {
+          "attach": {
+            "properties": {
+              "port": {
+                "type": "number",
+                "description": "Port of the editor's script debug adapter (-scriptdebugport).",
+                "default": 4712
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          { "type": "plasma", "request": "attach", "name": "Attach to Plasma Editor", "port": 4712 }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "Plasma: Attach to Plasma Editor",
+            "description": "Debug the scripts of the game playing in the editor.",
+            "body": { "type": "plasma", "request": "attach", "name": "Attach to Plasma Editor", "port": 4712 }
+          }
+        ]
+      }
+    ]
+  }
+}
