@@ -9,6 +9,19 @@ static void SetReturnObject(asIScriptGeneric* pGen, const T& value)
   new (pGen->GetAddressOfReturnLocation()) T(value);
 }
 
+// plMath::Min and Max also have variadic overloads, whose address clang will not take through a cast
+template <typename T>
+static T plMath_Min2(T a, T b)
+{
+  return plMath::Min(a, b);
+}
+
+template <typename T>
+static T plMath_Max2(T a, T b)
+{
+  return plMath::Max(a, b);
+}
+
 static void plMath_ASin_Generic(asIScriptGeneric* pGen)
 {
   SetReturnObject(pGen, plMath::ASin(pGen->GetArgFloat(0)));
@@ -106,11 +119,11 @@ void plAngelScriptEngineSingleton::Register_Math()
   AS_CHECK(m_pEngine->RegisterGlobalFunction("float Abs(float f)", asFUNCTION(plMath::Abs<float>), asCALL_CDECL));
   AS_CHECK(m_pEngine->RegisterGlobalFunction("plInt32 Abs(plInt32 f)", asFUNCTION(plMath::Abs<plInt32>), asCALL_CDECL));
 
-  AS_CHECK(m_pEngine->RegisterGlobalFunction("plInt32 Min(plInt32 f1, plInt32 f2)", asFUNCTIONPR(plMath::Min, (plInt32, plInt32), plInt32), asCALL_CDECL));
-  AS_CHECK(m_pEngine->RegisterGlobalFunction("float Min(float f1, float f2)", asFUNCTIONPR(plMath::Min, (float, float), float), asCALL_CDECL));
+  AS_CHECK(m_pEngine->RegisterGlobalFunction("plInt32 Min(plInt32 f1, plInt32 f2)", asFUNCTION(plMath_Min2<plInt32>), asCALL_CDECL));
+  AS_CHECK(m_pEngine->RegisterGlobalFunction("float Min(float f1, float f2)", asFUNCTION(plMath_Min2<float>), asCALL_CDECL));
 
-  AS_CHECK(m_pEngine->RegisterGlobalFunction("plInt32 Max(plInt32 f1, plInt32 f2)", asFUNCTIONPR(plMath::Max, (plInt32, plInt32), plInt32), asCALL_CDECL));
-  AS_CHECK(m_pEngine->RegisterGlobalFunction("float Max(float f1, float f2)", asFUNCTIONPR(plMath::Max, (float, float), float), asCALL_CDECL));
+  AS_CHECK(m_pEngine->RegisterGlobalFunction("plInt32 Max(plInt32 f1, plInt32 f2)", asFUNCTION(plMath_Max2<plInt32>), asCALL_CDECL));
+  AS_CHECK(m_pEngine->RegisterGlobalFunction("float Max(float f1, float f2)", asFUNCTION(plMath_Max2<float>), asCALL_CDECL));
 
   AS_CHECK(m_pEngine->RegisterGlobalFunction("plInt32 Clamp(plInt32 val, plInt32 min, plInt32 max)", asFUNCTIONPR(plMath::Clamp, (plInt32, plInt32, plInt32), plInt32), asCALL_CDECL));
   AS_CHECK(m_pEngine->RegisterGlobalFunction("float Clamp(float val, float min, float max)", asFUNCTIONPR(plMath::Clamp, (float, float, float), float), asCALL_CDECL));

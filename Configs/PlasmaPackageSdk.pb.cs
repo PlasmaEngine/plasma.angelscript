@@ -90,8 +90,8 @@ public static class PlasmaPackageSdk
 
         rules.PublicDefinitions.Add("BUILDSYSTEM_COMPILE_ENGINE_AS_DLL");
         rules.PublicDefinitions.Add("BUILDSYSTEM_SDKVERSION_MAJOR=0");
-        rules.PublicDefinitions.Add("BUILDSYSTEM_SDKVERSION_MINOR=11");
-        rules.PublicDefinitions.Add("BUILDSYSTEM_SDKVERSION_PATCH=2");
+        rules.PublicDefinitions.Add("BUILDSYSTEM_SDKVERSION_MINOR=12");
+        rules.PublicDefinitions.Add("BUILDSYSTEM_SDKVERSION_PATCH=0");
         rules.PublicDefinitions.Add("UNICODE");
         rules.PublicDefinitions.Add("_UNICODE");
 
@@ -178,7 +178,9 @@ public static class PlasmaPackageSdk
         rules.SourceDirectory = sourceDirectory;
         rules.PCHUsage = PCHUsage.UseExplicitOrShared;
         rules.SharedPCHHeaderFile = pchHeaderFile;
-        rules.AdditionalCompilerFlags.Add($"/FI\"{Path.Combine(context.ProjectRoot, sourceDirectory, pchHeaderFile)}\"");
+        // Force-includes the PCH: /FI for MSVC, -include for clang
+        string pchHeaderPath = Path.Combine(context.ProjectRoot, sourceDirectory, pchHeaderFile);
+        rules.AdditionalCompilerFlags.Add(context.Platform == TargetPlatform.Windows ? $"/FI\"{pchHeaderPath}\"" : $"-include \"{pchHeaderPath}\"");
 
         rules.PublicIncludePaths.Add("..");
         rules.PrivateDefinitions.Add(buildDefinition);
@@ -239,7 +241,7 @@ public static class PlasmaPackageSdk
     public static void AddImportLibrary(ModuleRules rules, BuildContext context, string outputName)
     {
         var library = Path.Combine(SdkBinaryDirectory(context),
-            outputName + (UsesMsvcToolchain(context) ? ".lib" : ".so"));
+            outputName + (UsesMsvcToolchain(context) ? ".lib" : context.Platform == TargetPlatform.Mac ? ".dylib" : ".so"));
 
         if (File.Exists(library))
         {

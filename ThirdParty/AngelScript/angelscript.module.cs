@@ -21,7 +21,7 @@ public class AngelScriptModule : ModuleRules
 
         // The native x64 call bridge is MASM, which every x64 MSVC toolchain assembles (Windows and the platforms built
         // the same way).
-        if (PlasmaBuildAngelScript.UsesNativeCallBridge(context))
+        if (PlasmaBuildAngelScript.UsesNativeCallBridge(context) || PlasmaBuildAngelScript.UsesArm64CallBridge(context))
         {
             AdditionalLinkerFlags.Add($"\"{PlasmaBuildAngelScript.GetNativeCallObjectPath(context)}\"");
         }
@@ -36,9 +36,19 @@ public static class PlasmaBuildAngelScript
 {
     private const string NativeCallSourceRelativePath = "ThirdParty/AngelScript/source/as_callfunc_x64_msvc_asm.asm";
 
+    private const string Arm64CallSourceRelativePath = "ThirdParty/AngelScript/source/as_callfunc_arm64_xcode.S";
+
     public static string GetNativeCallObjectPath(BuildContext context)
     {
-        return Path.Combine(context.ProjectRoot, "Intermediate", $"{context.Platform}_{context.Configuration}", "AngelScriptModule", "as_callfunc_x64_msvc_asm.obj");
+        var objectName = UsesArm64CallBridge(context) ? "as_callfunc_arm64_xcode.o" : "as_callfunc_x64_msvc_asm.obj";
+        return Path.Combine(context.ProjectRoot, "Intermediate", $"{context.Platform}_{context.Configuration}", "AngelScriptModule", objectName);
+    }
+
+    /// \brief Whether the build links the Apple arm64 call bridge (as_callfunc_arm64_xcode.S), which as_callfunc_arm64.cpp
+    /// calls into. Linux x64 needs no assembler step: as_callfunc_x64_gcc.cpp is inline assembly.
+    public static bool UsesArm64CallBridge(BuildContext context)
+    {
+        return context.Platform == TargetPlatform.Mac;
     }
 
     /// \brief Whether the build links the MASM x64 call bridge (as_callfunc_x64_msvc_asm.asm).
@@ -49,12 +59,13 @@ public static class PlasmaBuildAngelScript
 
     public static void AddNativeCallAssemblerStep(TargetRules rules, BuildContext context)
     {
-        if (!UsesNativeCallBridge(context))
+        var bArm64 = UsesArm64CallBridge(context);
+        if (!UsesNativeCallBridge(context) && !bArm64)
         {
             return;
         }
 
-        var sourcePath = Path.Combine(context.ProjectRoot, NativeCallSourceRelativePath);
+        var sourcePath = Path.Combine(context.ProjectRoot, bArm64 ? Arm64CallSourceRelativePath : NativeCallSourceRelativePath);
         var outputPath = GetNativeCallObjectPath(context);
         var outputDirectory = Path.GetDirectoryName(outputPath);
         if (!string.IsNullOrWhiteSpace(outputDirectory))
@@ -69,8 +80,9 @@ public static class PlasmaBuildAngelScript
 
         rules.PreBuildSteps.Add(new BuildStep
         {
-            Description = "Assemble AngelScript native x64 call bridge",
-            Command = $"{Quote(FindMsvcExecutableForRules("ml64.exe"))} /nologo /c /Fo{Quote(outputPath)} {Quote(sourcePath)}",
+            Description = bArm64 ? "Assemble AngelScript native arm64 call bridge" : "Assemble AngelScript native x64 call bridge",
+            Command = bArm64 ? $"xcrun clang -arch arm64 -c -o {Quote(outputPath)} {Quote(sourcePath)}"
+                             : $"{Quote(FindMsvcExecutableForRules("ml64.exe"))} /nologo /c /Fo{Quote(outputPath)} {Quote(sourcePath)}",
             WorkingDirectory = context.ProjectRoot,
             Outputs = { outputPath }
         });
